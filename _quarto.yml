@@ -1,0 +1,20 @@
+project:
+  type: website
+
+website:
+  title: "Advent_of_code"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: https://github.com/jromanowska
+        text: GitHub
+
+format:
+  html:
+    theme: vapor
+    css: styles.css
+    toc: true
+
+
+

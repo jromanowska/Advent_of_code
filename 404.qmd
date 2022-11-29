@@ -1,0 +1,13 @@
+---
+title: Page Not Found
+---
+
+The page you requested cannot be found due to one or more of following
+causes:
+
+1. The puzzle for this day has not yet been released.
+
+1. The puzzle for this day has not yet been solved.
+
+1. I preferred playing with my kids/watching a movie than using another hour
+in front of the computer screen.
