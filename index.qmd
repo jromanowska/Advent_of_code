@@ -1,80 +1,128 @@
 ---
-title: "Advent of code"
+title: "Welcome"
 ---
 
 My take on the puzzles in 2022 edition of [Advent of Code](https://adventofcode.com/2022).
 
 ::: calendar
-::: active
-[Day 1](Day_1.html)
-:::
+::: {.card .border-success .mb-3}
 ::: day
-[Day 2](Day_2.html)
+[1](Day_1.html)
 :::
-::: day
-[Day 3](Day_3.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 4](Day_4.html)
+[2](Day_2.html)
 :::
-::: day
-[Day 5](Day_5.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 6](Day_6.html)
+[3](Day_3.html)
 :::
-::: day
-[Day 7](Day_7.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 8](Day_8.html)
+[4](Day_4.html)
 :::
-::: day
-[Day 9](Day_9.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 10](Day_10.html)
+[5](Day_5.html)
 :::
-::: day
-[Day 11](Day_11.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 12](Day_12.html)
+[6](Day_6.html)
 :::
-::: day
-[Day 13](Day_13.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 14](Day_14.html)
+[7](Day_7.html)
 :::
-::: day
-[Day 15](Day_15.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 16](Day_16.html)
+[8](Day_8.html)
 :::
-::: day
-[Day 17](Day_17.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 18](Day_18.html)
+[9](Day_9.html)
 :::
-::: day
-[Day 19](Day_19.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 20](Day_20.html)
+[10](Day_10.html)
 :::
-::: day
-[Day 21](Day_21.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 22](Day_22.html)
+[11](Day_11.html)
 :::
-::: day
-[Day 23](Day_23.html)
 :::
+::: {.card .border-warning .mb-3}
 ::: day
-[Day 24](Day_24.html)
+[12](Day_12.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[13](Day_13.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[14](Day_14.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[15](Day_15.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[16](Day_16.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[17](Day_17.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[18](Day_18.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[19](Day_19.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[20](Day_20.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[21](Day_21.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[22](Day_22.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[23](Day_23.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[24](Day_24.html)
+:::
 :::
 :::

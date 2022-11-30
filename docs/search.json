@@ -1,9 +1,16 @@
 [
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "1 + 1\n\n[1] 2"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Advent of code",
+    "title": "Welcome",
     "section": "",
-    "text": "Day 1\n\n\nDay 2\n\n\nDay 3\n\n\nDay 4\n\n\nDay 5\n\n\nDay 6\n\n\nDay 7\n\n\nDay 8\n\n\nDay 9\n\n\nDay 10\n\n\nDay 11\n\n\nDay 12\n\n\nDay 13\n\n\nDay 14\n\n\nDay 15\n\n\nDay 16\n\n\nDay 17\n\n\nDay 18\n\n\nDay 19\n\n\nDay 20\n\n\nDay 21\n\n\nDay 22\n\n\nDay 23\n\n\nDay 24"
+    "text": "1\n\n\n\n\n2\n\n\n\n\n3\n\n\n\n\n4\n\n\n\n\n5\n\n\n\n\n6\n\n\n\n\n7\n\n\n\n\n8\n\n\n\n\n9\n\n\n\n\n10\n\n\n\n\n11\n\n\n\n\n12\n\n\n\n\n13\n\n\n\n\n14\n\n\n\n\n15\n\n\n\n\n16\n\n\n\n\n17\n\n\n\n\n18\n\n\n\n\n19\n\n\n\n\n20\n\n\n\n\n21\n\n\n\n\n22\n\n\n\n\n23\n\n\n\n\n24"
   }
 ]

@@ -4,6 +4,7 @@ project:
 
 website:
   title: "Advent_of_code"
+  site-path: "/docs/"
   navbar:
     left:
       - href: index.qmd

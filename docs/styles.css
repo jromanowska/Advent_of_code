@@ -6,29 +6,24 @@
   flex-basis: 50px;
   gap: 16px;
   align-items: center;
+  text-shadow: 2px 2px 5px #99ff99;
 }
 .day {
   flex-grow: 1;
-  border: 2px solid;
-  border-radius: 10px;
+  min-width: 50px;
   padding: 2px;
   text-align: center;
   vertical-align: middle;
 }
 .active {
   flex-grow: 2;
-  border-color: green;
-  border: 2px solid;
-  border-radius: 10px;
+  min-width: 50px;
   padding: 2px;
   text-align: center;
   vertical-align: middle;
 }
 
-body{
-  color: white;
-}
 a{
   text-decoration: none;
-  color: green;
+  color: #33cc33;
 }
