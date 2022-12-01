@@ -7,7 +7,7 @@ My take on the puzzles in 2022 edition of [Advent of Code](https://adventofcode.
 ::: calendar
 ::: {.card .border-success .mb-3}
 ::: day
-[1](Day_1.html)
+[1](SOLUTIONS/Day_1.html)
 :::
 :::
 ::: {.card .border-warning .mb-3}

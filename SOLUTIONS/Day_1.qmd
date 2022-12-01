@@ -1,0 +1,57 @@
+---
+title: "Day 1"
+author: "Julia Romanowska"
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(here)
+library(emoji)
+```
+
+
+## Data
+
+The list of calories of all items carried by the elves.
+
+```{r}
+(calories_raw <- read_table(
+  here("DATA", "input_day_01.txt"),
+  col_names = FALSE,
+  skip_empty_rows = FALSE,
+  show_col_types = FALSE
+))
+```
+
+Each elf inputs the calories their carrying in column, separating their items
+from the previous ones by an empty line.
+
+::: {.card .border-secondary .mb-3}
+::: {.card-text}
+_What an idea these elves had! I wonder which programming language they used?!_
+:::
+:::
+
+## Separate elves
+
+Each `NA` means new elf.
+
+```{r}
+calories_new <- calories_raw %>%
+  rename(calories = X1) %>%
+  mutate(is_na = is.na(calories)) %>%
+  mutate(which_elf = cumsum(is_na) + 1)
+calories_new
+```
+
+
+## Count calories
+
+```{r}
+calories_new %>%
+  group_by(which_elf) %>%
+  summarise(sum_cal = sum(calories, na.rm = TRUE)) %>%
+  arrange(desc(sum_cal))
+```
+
+`r unname(emoji_name["thinking_face"])` **But that's not correct?!**
