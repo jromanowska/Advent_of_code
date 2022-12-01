@@ -15,8 +15,10 @@ library(emoji)
 The list of calories of all items carried by the elves.
 
 ```{r}
+data_in_file <- here("DATA", "input_day_01.txt")
+
 (calories_raw <- read_table(
-  here("DATA", "input_day_01.txt"),
+  data_in_file,
   col_names = FALSE,
   skip_empty_rows = FALSE,
   show_col_types = FALSE
@@ -54,4 +56,4 @@ calories_new %>%
   arrange(desc(sum_cal))
 ```
 
-`r unname(emoji_name["thinking_face"])` **But that's not correct?!**
+`r unname(emoji_name["partying_face"])` **TADA!**
