@@ -5,14 +5,14 @@ title: "Welcome"
 My take on the puzzles in 2022 edition of [Advent of Code](https://adventofcode.com/2022).
 
 ::: calendar
-::: {.card .border-success .mb-3}
+::: {.card .border-warning .mb-3}
 ::: day
 [1](SOLUTIONS/Day_1.html)
 :::
 :::
-::: {.card .border-warning .mb-3}
+::: {.card .border-success .mb-3}
 ::: day
-[2](Day_2.html)
+[2](SOLUTIONS/Day_2.html)
 :::
 :::
 ::: {.card .border-warning .mb-3}
