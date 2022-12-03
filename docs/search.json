@@ -1,24 +1,24 @@
 [
   {
-    "objectID": "SOLUTIONS/Day_2.html",
-    "href": "SOLUTIONS/Day_2.html",
-    "title": "Day 1",
+    "objectID": "SOLUTIONS/Day_3.html",
+    "href": "SOLUTIONS/Day_3.html",
+    "title": "Day 3",
     "section": "",
-    "text": "We have a special coding here - let’s write a dictionary for that:\n\nopponents codes:\n\nA = \"rock\", B = \"paper\", C = \"scissors\"\n\nmy codes:\n\nX = \"rock\", Y = \"paper\", Z = \"scissors\"\n..but the important thing is that each of these give various points, which we can basically treat as factor-levels:\n\n(games_in <- read_delim(\n  here(\"DATA\", \"input_day_02.txt\"),\n  delim = \" \",\n  col_names = FALSE,\n  skip_empty_rows = FALSE,\n  show_col_types = FALSE\n))\n\n# A tibble: 2,500 × 2\n   X1    X2   \n   <chr> <chr>\n 1 C     Y    \n 2 A     Z    \n 3 B     Y    \n 4 A     Z    \n 5 A     X    \n 6 A     Z    \n 7 B     Y    \n 8 A     Z    \n 9 B     Y    \n10 C     Z    \n# … with 2,490 more rows\n\ngames_fct <- games_in %>%\n  rename(opponent = X1, me = X2) %>%\n  mutate(across(.fns = as.factor))\n\n\n\n\nskimr::skim(games_fct)\n\n\nData summary\n\n\nName\ngames_fct\n\n\nNumber of rows\n2500\n\n\nNumber of columns\n2\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\nfactor\n2\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: factor\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nordered\nn_unique\ntop_counts\n\n\n\n\nopponent\n0\n1\nFALSE\n3\nB: 991, C: 795, A: 714\n\n\nme\n0\n1\nFALSE\n3\nY: 1178, Z: 771, X: 551\n\n\n\n\nlevels(games_fct$opponent)\n\n[1] \"A\" \"B\" \"C\"\n\nlevels(games_fct$me)\n\n[1] \"X\" \"Y\" \"Z\"\n\n\n✔️ OK, no missingness and no strange values."
+    "text": "Each line is a list of items in one rucksack.\n\n(rucksack_data <- read_table(\n  here(\"DATA\", \"input_day_03.txt\"),\n  col_names = FALSE\n))\n\n\n── Column specification ────────────────────────────────────────────────────────\ncols(\n  X1 = col_character()\n)\n\n\n# A tibble: 300 × 1\n   X1                                            \n   <chr>                                         \n 1 DMwrszrfMzSSCpLpfCCn                          \n 2 RMvhZhQqlvhMvRtbvbcPclPlncddppLTdppd          \n 3 tVMQhFtjjWmsFJsmsW                            \n 4 trRtvNhfJhSzzSTFVhQQZQhHGphP                  \n 5 CnLMBWLwDMgMcwwdngdHGPVTQGpTHZdGPGpd          \n 6 LLDqcDgwqCMnLWqtvzrzbbtJqPjJ                  \n 7 wQQwHNQLmbWQbQRHwHNFBbwqPfjqlzRMGRqzpSfvPlzplM\n 8 nCtGCZZtsGsrtDMZpfMpSlMlvlZq                  \n 9 cJctJCgVJsCJnDTsCthGhGLwBWBbbQmLbgQLQQdWbbbQ  \n10 ZWnNlTNTnhhQQlDNdmmpwrrrqBwjwjZd              \n# … with 290 more rows"
   },
   {
-    "objectID": "SOLUTIONS/Day_2.html#check-who-wins-per-round",
-    "href": "SOLUTIONS/Day_2.html#check-who-wins-per-round",
-    "title": "Day 1",
-    "section": "Check who wins per round",
-    "text": "Check who wins per round\nI get 0 if I lose, 3 if it’s a draw, and 6 if I win.\n\n#' returns points for player1\ncheck_rules <- function(player1, player2){\n  player1_lose <- 0\n  player1_draw <- 3\n  player1_win <- 6\n\n  all_diff <- player1 - player2\n  map_dbl(all_diff, function(cur_diff){\n    if(cur_diff == 0){ # draw\n      return(player1_draw)\n    }\n    \n    if(abs(cur_diff) == 2){ # one of them has 'rock', one 'scissors'\n      if(cur_diff < 0){\n        return(player1_win)\n      }\n      \n      return(player1_lose)\n    }\n    \n    if(cur_diff > 0){ # check who has higher value\n      return(player1_win)\n    }\n    \n    return(player1_lose)\n  })\n}\n\n(games_fct <- games_fct %>%\n  mutate(points = check_rules(as.numeric(me), as.numeric(opponent))))\n\n# A tibble: 2,500 × 3\n   opponent me    points\n   <fct>    <fct>  <dbl>\n 1 C        Y          0\n 2 A        Z          0\n 3 B        Y          3\n 4 A        Z          0\n 5 A        X          3\n 6 A        Z          0\n 7 B        Y          3\n 8 A        Z          0\n 9 B        Y          3\n10 C        Z          3\n# … with 2,490 more rows"
+    "objectID": "SOLUTIONS/Day_3.html#find-the-repeating-item",
+    "href": "SOLUTIONS/Day_3.html#find-the-repeating-item",
+    "title": "Day 3",
+    "section": "Find the repeating item",
+    "text": "Find the repeating item\nFirst, we need to find the middle of each string and divide.\n\nrucksack_divided <- map(\n  rucksack_data$X1,\n  function(item_list){\n    split_at <- str_length(item_list)/2\n    out_strings <- c(\n      str_sub(item_list, start = 1, end = split_at),\n      str_sub(item_list, start = split_at + 1, end = -1)\n    )\n    return(out_strings)\n  }\n)\nrucksack_divided[[1]]\n\n[1] \"DMwrszrfMz\" \"SSCpLpfCCn\"\n\n\nNext, compare the strings in each compartment to find the repeating item for each rucksack.\n\nrepeating_items <- map(\n  rucksack_divided,\n  function(compartments){\n    unique_contents <- map(\n      compartments,\n      function(item_list){\n        strsplit(item_list, split = \"\") %>%\n          unlist() %>%\n          unique()\n      }\n    )\n    return(Reduce(f = intersect, x = unique_contents))\n  }\n)\nrepeating_items[[1]]\n\n[1] \"f\"\n\n\nChecking - do I get only one item per rucksack?\n\nlengths(repeating_items) %>%\n  unique()\n\n[1] 1\n\n\n✔️ Yes, great!"
   },
   {
-    "objectID": "SOLUTIONS/Day_2.html#get-total-points",
-    "href": "SOLUTIONS/Day_2.html#get-total-points",
-    "title": "Day 1",
-    "section": "Get total points",
-    "text": "Get total points\nIn addition to points gained by drawing or winning a round, I get points for what I chose (levels of factor).\n\ntotal_score <- games_fct %>%\n  mutate(total_per_round = as.numeric(me) + points) %>%\n  summarise(grand_total = sum(total_per_round))\n\n\n\nThe total score is 10941!"
+    "objectID": "SOLUTIONS/Day_3.html#priority-of-items",
+    "href": "SOLUTIONS/Day_3.html#priority-of-items",
+    "title": "Day 3",
+    "section": "Priority of items",
+    "text": "Priority of items\nLowercase letters have priorities from 1 through 26, uppercase letters - from 27 through 52.\n\npriority_low <- str_locate(\n  paste0(letters, collapse = \"\"), letters\n)[, \"start\"]\npriority_low <- tibble(\n  letter = letters,\n  prior = priority_low\n)\npriority_low\n\n# A tibble: 26 × 2\n   letter prior\n   <chr>  <int>\n 1 a          1\n 2 b          2\n 3 c          3\n 4 d          4\n 5 e          5\n 6 f          6\n 7 g          7\n 8 h          8\n 9 i          9\n10 j         10\n# … with 16 more rows\n\npriority_up <- str_locate(\n  paste0(LETTERS, collapse = \"\"), LETTERS\n)[, \"start\"] + 26\npriority_up <- tibble(\n  letter = LETTERS,\n  prior = priority_up\n)\npriority_up\n\n# A tibble: 26 × 2\n   letter prior\n   <chr>  <dbl>\n 1 A         27\n 2 B         28\n 3 C         29\n 4 D         30\n 5 E         31\n 6 F         32\n 7 G         33\n 8 H         34\n 9 I         35\n10 J         36\n# … with 16 more rows\n\npriority_all <- bind_rows(\n  priority_low, priority_up\n)\n\nNow, find the sum of the priorities of repeated items.\n\ntotal_priority <- tibble(\n  repeat_item = unlist(repeating_items)\n  ) %>%\n  left_join(\n    priority_all,\n    by = c(\"repeat_item\" = \"letter\")\n  ) %>%\n  summarise(sum_priority = sum(prior))\n\n\n\nThe total priority is 7811! 🥳"
   },
   {
     "objectID": "SOLUTIONS/Day_1.html",
@@ -40,6 +40,27 @@
     "title": "Day 1",
     "section": "Count calories",
     "text": "Count calories\n\ncalories_new %>%\n  group_by(which_elf) %>%\n  summarise(sum_cal = sum(calories, na.rm = TRUE)) %>%\n  arrange(desc(sum_cal))\n\n# A tibble: 245 × 2\n   which_elf sum_cal\n       <dbl>   <dbl>\n 1       213   68467\n 2       234   68143\n 3        89   66810\n 4        34   66631\n 5       209   65461\n 6       199   64966\n 7       145   64176\n 8       140   63815\n 9       110   63338\n10       150   63104\n# … with 235 more rows\n\n\n🥳 TADA!"
+  },
+  {
+    "objectID": "SOLUTIONS/Day_2.html",
+    "href": "SOLUTIONS/Day_2.html",
+    "title": "Day 2",
+    "section": "",
+    "text": "We have a special coding here - let’s write a dictionary for that:\n\nopponents codes:\n\nA = \"rock\", B = \"paper\", C = \"scissors\"\n\nmy codes:\n\nX = \"rock\", Y = \"paper\", Z = \"scissors\"\n..but the important thing is that each of these give various points, which we can basically treat as factor-levels:\n\n(games_in <- read_delim(\n  here(\"DATA\", \"input_day_02.txt\"),\n  delim = \" \",\n  col_names = FALSE,\n  skip_empty_rows = FALSE,\n  show_col_types = FALSE\n))\n\n# A tibble: 2,500 × 2\n   X1    X2   \n   <chr> <chr>\n 1 C     Y    \n 2 A     Z    \n 3 B     Y    \n 4 A     Z    \n 5 A     X    \n 6 A     Z    \n 7 B     Y    \n 8 A     Z    \n 9 B     Y    \n10 C     Z    \n# … with 2,490 more rows\n\ngames_fct <- games_in %>%\n  rename(opponent = X1, me = X2) %>%\n  mutate(across(.fns = as.factor))\n\n\n\n\nskimr::skim(games_fct)\n\n\nData summary\n\n\nName\ngames_fct\n\n\nNumber of rows\n2500\n\n\nNumber of columns\n2\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\nfactor\n2\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: factor\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nordered\nn_unique\ntop_counts\n\n\n\n\nopponent\n0\n1\nFALSE\n3\nB: 991, C: 795, A: 714\n\n\nme\n0\n1\nFALSE\n3\nY: 1178, Z: 771, X: 551\n\n\n\n\nlevels(games_fct$opponent)\n\n[1] \"A\" \"B\" \"C\"\n\nlevels(games_fct$me)\n\n[1] \"X\" \"Y\" \"Z\"\n\n\n✔️ OK, no missingness and no strange values."
+  },
+  {
+    "objectID": "SOLUTIONS/Day_2.html#check-who-wins-per-round",
+    "href": "SOLUTIONS/Day_2.html#check-who-wins-per-round",
+    "title": "Day 2",
+    "section": "Check who wins per round",
+    "text": "Check who wins per round\nI get 0 if I lose, 3 if it’s a draw, and 6 if I win.\n\n#' returns points for player1\ncheck_rules <- function(player1, player2){\n  player1_lose <- 0\n  player1_draw <- 3\n  player1_win <- 6\n\n  all_diff <- player1 - player2\n  map_dbl(all_diff, function(cur_diff){\n    if(cur_diff == 0){ # draw\n      return(player1_draw)\n    }\n    \n    if(abs(cur_diff) == 2){ # one of them has 'rock', one 'scissors'\n      if(cur_diff < 0){\n        return(player1_win)\n      }\n      \n      return(player1_lose)\n    }\n    \n    if(cur_diff > 0){ # check who has higher value\n      return(player1_win)\n    }\n    \n    return(player1_lose)\n  })\n}\n\n(games_fct <- games_fct %>%\n  mutate(points = check_rules(as.numeric(me), as.numeric(opponent))))\n\n# A tibble: 2,500 × 3\n   opponent me    points\n   <fct>    <fct>  <dbl>\n 1 C        Y          0\n 2 A        Z          0\n 3 B        Y          3\n 4 A        Z          0\n 5 A        X          3\n 6 A        Z          0\n 7 B        Y          3\n 8 A        Z          0\n 9 B        Y          3\n10 C        Z          3\n# … with 2,490 more rows"
+  },
+  {
+    "objectID": "SOLUTIONS/Day_2.html#get-total-points",
+    "href": "SOLUTIONS/Day_2.html#get-total-points",
+    "title": "Day 2",
+    "section": "Get total points",
+    "text": "Get total points\nIn addition to points gained by drawing or winning a round, I get points for what I chose (levels of factor).\n\ntotal_score <- games_fct %>%\n  mutate(total_per_round = as.numeric(me) + points) %>%\n  summarise(grand_total = sum(total_per_round))\n\n\n\nThe total score is 10941!"
   },
   {
     "objectID": "about.html",

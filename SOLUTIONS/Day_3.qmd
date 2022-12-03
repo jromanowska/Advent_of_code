@@ -1,0 +1,119 @@
+---
+title: "Day 3"
+author: "Julia Romanowska"
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(here)
+library(emoji)
+```
+
+## Data
+
+Each line is a list of items in one rucksack.
+
+```{r}
+(rucksack_data <- read_table(
+  here("DATA", "input_day_03.txt"),
+  col_names = FALSE
+))
+```
+
+## Find the repeating item
+
+First, we need to find the middle of each string and divide.
+
+```{r}
+rucksack_divided <- map(
+  rucksack_data$X1,
+  function(item_list){
+    split_at <- str_length(item_list)/2
+    out_strings <- c(
+      str_sub(item_list, start = 1, end = split_at),
+      str_sub(item_list, start = split_at + 1, end = -1)
+    )
+    return(out_strings)
+  }
+)
+rucksack_divided[[1]]
+```
+
+Next, compare the strings in each compartment to find the repeating item for
+each rucksack.
+
+```{r}
+repeating_items <- map(
+  rucksack_divided,
+  function(compartments){
+    unique_contents <- map(
+      compartments,
+      function(item_list){
+        strsplit(item_list, split = "") %>%
+          unlist() %>%
+          unique()
+      }
+    )
+    return(Reduce(f = intersect, x = unique_contents))
+  }
+)
+repeating_items[[1]]
+```
+
+Checking - do I get only one item per rucksack?
+
+```{r}
+lengths(repeating_items) %>%
+  unique()
+```
+
+`r unname(emoji_name["check_mark"])` Yes, great!
+
+## Priority of items
+
+Lowercase letters have priorities from 1 through 26, uppercase letters - from 27
+through 52.
+
+```{r}
+priority_low <- str_locate(
+  paste0(letters, collapse = ""), letters
+)[, "start"]
+priority_low <- tibble(
+  letter = letters,
+  prior = priority_low
+)
+priority_low
+
+priority_up <- str_locate(
+  paste0(LETTERS, collapse = ""), LETTERS
+)[, "start"] + 26
+priority_up <- tibble(
+  letter = LETTERS,
+  prior = priority_up
+)
+priority_up
+
+priority_all <- bind_rows(
+  priority_low, priority_up
+)
+```
+
+Now, find the sum of the priorities of repeated items.
+
+```{r}
+total_priority <- tibble(
+  repeat_item = unlist(repeating_items)
+  ) %>%
+  left_join(
+    priority_all,
+    by = c("repeat_item" = "letter")
+  ) %>%
+  summarise(sum_priority = sum(prior))
+```
+
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+The total priority is `r sprintf("%d", total_priority$sum_priority)`! `r unname(emoji_name["partying_face"])`
+:::
+:::
