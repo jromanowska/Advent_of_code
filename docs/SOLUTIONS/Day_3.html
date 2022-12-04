@@ -160,6 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data">Data</a></li>
   <li><a href="#find-the-repeating-item" id="toc-find-the-repeating-item" class="nav-link" data-scroll-target="#find-the-repeating-item">Find the repeating item</a></li>
   <li><a href="#priority-of-items" id="toc-priority-of-items" class="nav-link" data-scroll-target="#priority-of-items">Priority of items</a></li>
+  <li><a href="#group-badges" id="toc-group-badges" class="nav-link" data-scroll-target="#group-badges">Group badges</a></li>
   </ul>
 </nav>
     </div>
@@ -342,6 +343,78 @@ cols(
 <div class="card border-success mb-3">
 <div class="card-text">
 <p>The total priority is 7811! 🥳</p>
+</div>
+</div>
+</section>
+<section id="group-badges" class="level2">
+<h2 class="anchored" data-anchor-id="group-badges">Group badges</h2>
+<p>Each three elves create a group and they are recognized by the item that they carry. This item is the only item that is shared by these elves.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># there are 3 members in each group</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>no_members <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>(rucksack_groups <span class="ot">&lt;-</span> rucksack_data <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">group_no =</span> </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>               <span class="fu">rep</span>(</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">seq</span>(<span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(rucksack_data)<span class="sc">/</span>no_members)),</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">each =</span> no_members</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>             ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 300 × 2
+   X1                                             group_no
+   &lt;chr&gt;                                             &lt;int&gt;
+ 1 DMwrszrfMzSSCpLpfCCn                                  1
+ 2 RMvhZhQqlvhMvRtbvbcPclPlncddppLTdppd                  1
+ 3 tVMQhFtjjWmsFJsmsW                                    1
+ 4 trRtvNhfJhSzzSTFVhQQZQhHGphP                          2
+ 5 CnLMBWLwDMgMcwwdngdHGPVTQGpTHZdGPGpd                  2
+ 6 LLDqcDgwqCMnLWqtvzrzbbtJqPjJ                          2
+ 7 wQQwHNQLmbWQbQRHwHNFBbwqPfjqlzRMGRqzpSfvPlzplM        3
+ 8 nCtGCZZtsGsrtDMZpfMpSlMlvlZq                          3
+ 9 cJctJCgVJsCJnDTsCthGhGLwBWBbbQmLbgQLQQdWbbbQ          3
+10 ZWnNlTNTnhhQQlDNdmmpwrrrqBwjwjZd                      4
+# … with 290 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>find_common_item <span class="ot">&lt;-</span> <span class="cf">function</span>(items_list){</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  unique_items <span class="ot">&lt;-</span> <span class="fu">map</span>(items_list, <span class="cf">function</span>(items){</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_split</span>(items, <span class="at">pattern =</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">unlist</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">unique</span>()</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Reduce</span>(intersect, unique_items)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>(rucksack_groups <span class="ot">&lt;-</span> rucksack_groups <span class="sc">%&gt;%</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group_no) <span class="sc">%&gt;%</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">common_item =</span> <span class="fu">find_common_item</span>(X1)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(priority_all, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"common_item"</span> <span class="ot">=</span> <span class="st">"letter"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 100 × 3
+   group_no common_item prior
+      &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;
+ 1        1 M              39
+ 2        2 P              42
+ 3        3 G              33
+ 4        4 l              12
+ 5        5 s              19
+ 6        6 t              20
+ 7        7 Z              52
+ 8        8 n              14
+ 9        9 p              16
+10       10 z              26
+# … with 90 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sum_prior <span class="ot">&lt;-</span> rucksack_groups <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sum_prior =</span> <span class="fu">sum</span>(prior)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="card border-success mb-3">
+<div class="card-text">
+<p>The total priority is 2639! 🥳</p>
 </div>
 </div>
 

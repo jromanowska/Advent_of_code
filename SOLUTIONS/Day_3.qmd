@@ -117,3 +117,48 @@ total_priority <- tibble(
 The total priority is `r sprintf("%d", total_priority$sum_priority)`! `r unname(emoji_name["partying_face"])`
 :::
 :::
+
+## Group badges
+
+Each three elves create a group and they are recognized by the item that they
+carry. This item is the only item that is shared by these elves.
+
+```{r}
+# there are 3 members in each group
+no_members <- 3
+(rucksack_groups <- rucksack_data %>%
+  add_column(group_no = 
+               rep(
+                 seq(1:(nrow(rucksack_data)/no_members)),
+                 each = no_members
+                )
+             ))
+
+find_common_item <- function(items_list){
+  unique_items <- map(items_list, function(items){
+    str_split(items, pattern = "") %>%
+      unlist() %>%
+      unique()
+  })
+  return(
+    Reduce(intersect, unique_items)
+  )
+}
+
+(rucksack_groups <- rucksack_groups %>%
+  group_by(group_no) %>%
+  summarise(
+    common_item = find_common_item(X1)
+  ) %>%
+  left_join(priority_all, by = c("common_item" = "letter")))
+
+sum_prior <- rucksack_groups %>%
+  summarise(sum_prior = sum(prior)) %>%
+  pull()
+```
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+The total priority is `r sprintf("%d", sum_prior)`! `r unname(emoji_name["partying_face"])`
+:::
+:::
