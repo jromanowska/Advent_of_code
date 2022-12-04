@@ -1,0 +1,102 @@
+---
+title: "Day 4"
+author: "Julia Romanowska"
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(here)
+library(emoji)
+```
+
+## Data
+
+Each line contains a pair of sections which two elves should clean.
+
+```{r}
+(sections_list <- read_table(
+  here("DATA", "input_day_04.txt"),
+  col_names = "section_pairs"
+))
+```
+
+Cleaning the data a bit.
+
+```{r}
+(
+  sections_list <- sections_list %>%
+   #extract sections for elves
+   separate(col = section_pairs, into = c("elf1", "elf2"), sep = ",") %>%
+   # extract minimums and maximums for each elf
+   separate(col = elf1, into = c("elf1_min", "elf1_max"), sep = "-") %>%
+   separate(col = elf2, into = c("elf2_min", "elf2_max"), sep = "-") %>%
+   mutate(across(.cols = everything(), .fns = as.numeric))
+)
+```
+
+## Overlapping
+
+### Find entirely overlapping sections.
+
+```{r}
+find_overlap <- function(min1, min2, max1, max2){
+  # check whether the second set of numbers is contained in the first
+  return(
+    (min2 >= min1) & (max2 <= max1)
+  )
+}
+
+(sections_list_entire_overlap <- sections_list %>%
+  rowwise() %>%
+  mutate(elf2_overlap = find_overlap(elf1_min, elf2_min, elf1_max, elf2_max)) %>%
+  mutate(elf1_overlap = find_overlap(elf2_min, elf1_min, elf2_max, elf1_max)))
+```
+
+Find the total.
+
+```{r}
+tot_overlap <- sections_list_entire_overlap %>%
+  ungroup() %>%
+  mutate(any_overlap = elf2_overlap | elf1_overlap) %>%
+  summarise(sum_overlap = sum(any_overlap)) %>%
+  pull()
+```
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+The total number of _entirely_ overlapping regions is `r sprintf("%d", tot_overlap)`! `r unname(emoji_name["partying_face"])`
+:::
+:::
+
+### Find overlapping at all
+
+```{r}
+find_any_overlap <- function(min1, min2, max1, max2){
+  # check whether the second set of numbers is contained in the first
+  return(
+    ((min2 >= min1) & (min2 <= max1)) |
+    ((max2 <= max1) & (max2 >= min1))
+  )
+}
+
+(sections_list_any_overlap <- sections_list %>%
+  rowwise() %>%
+  mutate(elf2_overlap = find_any_overlap(elf1_min, elf2_min, elf1_max, elf2_max)) %>%
+  mutate(elf1_overlap = find_any_overlap(elf2_min, elf1_min, elf2_max, elf1_max)))
+```
+
+Find total
+
+```{r}
+tot_any_overlap <- sections_list_any_overlap %>%
+  ungroup() %>%
+  mutate(any_overlap = elf2_overlap | elf1_overlap) %>%
+  summarise(sum_overlap = sum(any_overlap)) %>%
+  pull()
+```
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+The total number of _at tall_ overlapping regions is `r sprintf("%d", tot_any_overlap)`! `r unname(emoji_name["partying_face"])`
+:::
+:::
