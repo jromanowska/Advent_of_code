@@ -49,6 +49,34 @@
     "text": "Count calories\n\ncalories_new %>%\n  group_by(which_elf) %>%\n  summarise(sum_cal = sum(calories, na.rm = TRUE)) %>%\n  arrange(desc(sum_cal))\n\n# A tibble: 245 × 2\n   which_elf sum_cal\n       <dbl>   <dbl>\n 1       213   68467\n 2       234   68143\n 3        89   66810\n 4        34   66631\n 5       209   65461\n 6       199   64966\n 7       145   64176\n 8       140   63815\n 9       110   63338\n10       150   63104\n# … with 235 more rows\n\n\n🥳 TADA!"
   },
   {
+    "objectID": "SOLUTIONS/Day_5.html",
+    "href": "SOLUTIONS/Day_5.html",
+    "title": "Day 5",
+    "section": "",
+    "text": "The input is one file, but two parts:\n\nfirst, the order of crates in stacks\nnext, the movement procedure\n\n\ninput_file_path <- here(\"DATA\", \"input_day_05.txt\")\n\ncat(system(paste(\"head\", input_file_path), intern = TRUE), sep = \"\\n\")\n\n[N]     [Q]         [N]            \n[R]     [F] [Q]     [G] [M]        \n[J]     [Z] [T]     [R] [H] [J]    \n[T] [H] [G] [R]     [B] [N] [T]    \n[Z] [J] [J] [G] [F] [Z] [S] [M]    \n[B] [N] [N] [N] [Q] [W] [L] [Q] [S]\n[D] [S] [R] [V] [T] [C] [C] [N] [G]\n[F] [R] [C] [F] [L] [Q] [F] [D] [P]\n 1   2   3   4   5   6   7   8   9 \n\n\n\n\nI should probably create a nice code where I read in the input and convert it to the list of vectors, but I don’t have time now 😎\n\n\nI have splitted the input file to get separate input for the stacks and for the instructions.\n\nsystem(\"./Day_5_split_input.sh\")\nlist.files(here(\"DATA\"))\n\n[1] \"input_day_01.txt\"              \"input_day_02.txt\"             \n[3] \"input_day_03.txt\"              \"input_day_04.txt\"             \n[5] \"input_day_05_instructions.txt\" \"input_day_05_stacks.txt\"      \n[7] \"input_day_05.txt\"             \n\n(instructions <- read_table(\n  here(\"DATA\", \"input_day_05_instructions.txt\"),\n  show_col_types = FALSE,\n  col_names = FALSE\n))\n\n# A tibble: 503 × 6\n   X1       X2 X3       X4 X5       X6\n   <chr> <dbl> <chr> <dbl> <chr> <dbl>\n 1 move      3 from      9 to        4\n 2 move      2 from      5 to        2\n 3 move      8 from      1 to        9\n 4 move      4 from      7 to        1\n 5 move      5 from      3 to        8\n 6 move      3 from      3 to        7\n 7 move     11 from      8 to        3\n 8 move      7 from      3 to        6\n 9 move      2 from      5 to        9\n10 move      3 from      1 to        6\n# … with 493 more rows\n\ninstructions <- instructions %>%\n  select(move_how_many = X2, from = X4, to = X6)\n\nNow, creating a list of vectors for the initial stack of crates.\n\ninit_stacks <- list(\n  stack1 = c(\"F\", \"D\", \"B\", \"Z\", \"T\", \"J\", \"R\", \"N\"),\n  stack2 = c(\"R\", \"S\", \"N\", \"J\", \"H\"),\n  stack3 = c(\"C\", \"R\", \"N\", \"J\", \"G\", \"Z\", \"F\", \"Q\"),\n  stack4 = c(\"F\", \"V\", \"N\", \"G\", \"R\", \"T\", \"Q\"),\n  stack5 = c(\"L\", \"T\", \"Q\", \"F\"),\n  stack6 = c(\"Q\", \"C\", \"W\", \"Z\", \"B\", \"R\", \"G\", \"N\"),\n  stack7 = c(\"F\", \"C\", \"L\", \"S\", \"N\", \"H\", \"M\"),\n  stack8 = c(\"D\", \"N\", \"Q\", \"M\", \"T\", \"J\"),\n  stack9 = c(\"P\", \"G\", \"S\")\n)"
+  },
+  {
+    "objectID": "SOLUTIONS/Day_5.html#functions",
+    "href": "SOLUTIONS/Day_5.html#functions",
+    "title": "Day 5",
+    "section": "Functions",
+    "text": "Functions\nThis looks like we need some type queue function:\n\npush_back <- function(stacks, from, to){\n  stack_name_from <- paste0(\"stack\", from)\n  stack_name_to <- paste0(\"stack\", to)\n  \n  length_from <- length(stacks[[stack_name_from]])\n  \n  crate_to_move <- stacks[[stack_name_from]][length_from]\n  new_stacks <- stacks\n  new_stacks[[stack_name_from]] <- stacks[[stack_name_from]][-length_from]\n  new_stacks[[stack_name_to]] <- c(stacks[[stack_name_to]], crate_to_move)\n  \n  return(new_stacks)\n}"
+  },
+  {
+    "objectID": "SOLUTIONS/Day_5.html#rearranging",
+    "href": "SOLUTIONS/Day_5.html#rearranging",
+    "title": "Day 5",
+    "section": "Rearranging",
+    "text": "Rearranging\nThis is best in base R…\n\ncur_stacks <- init_stacks\n\nfor(i in nrow(instructions)){\n  cur_instruction <- instructions[i,]\n\n  for(j in 1:(cur_instruction$move_how_many)){\n    cur_stacks <<- push_back(cur_stacks, cur_instruction$from, cur_instruction$to)\n  }\n}\ncur_stacks\n\n$stack1\n[1] \"F\" \"D\" \"B\" \"Z\" \"T\" \"J\" \"R\" \"N\"\n\n$stack2\n[1] \"R\" \"S\" \"N\" \"J\" \"H\"\n\n$stack3\n[1] \"C\" \"R\" \"N\" \"J\" \"G\" \"Z\" \"F\" \"Q\"\n\n$stack4\n[1] \"F\" \"V\" \"N\" \"G\" \"R\" \"T\" \"Q\"\n\n$stack5\n[1] \"L\" \"T\" \"Q\" \"F\"\n\n$stack6\n[1] \"Q\" \"C\" \"W\" \"Z\" \"B\"\n\n$stack7\n[1] \"F\" \"C\" \"L\" \"S\" \"N\" \"H\" \"M\"\n\n$stack8\n[1] \"D\" \"N\" \"Q\" \"M\" \"T\" \"J\"\n\n$stack9\n[1] \"P\" \"G\" \"S\" \"N\" \"G\" \"R\""
+  },
+  {
+    "objectID": "SOLUTIONS/Day_5.html#whats-on-top",
+    "href": "SOLUTIONS/Day_5.html#whats-on-top",
+    "title": "Day 5",
+    "section": "What’s on top?",
+    "text": "What’s on top?\n\ntop_crates <- map_chr(\n  cur_stacks,\n  function(stack){\n    l_stack <- length(stack)\n    return(stack[l_stack])\n  }\n)\n\n\n\nThe last crates on all stacks: NHQQFBMJR! Wrong? 🤔"
+  },
+  {
     "objectID": "SOLUTIONS/Day_4.html",
     "href": "SOLUTIONS/Day_4.html",
     "title": "Day 4",
