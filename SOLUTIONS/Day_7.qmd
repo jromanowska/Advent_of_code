@@ -1,0 +1,26 @@
+---
+title: "Day 7"
+author: "Julia Romanowska"
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(here)
+library(emoji)
+```
+
+## Data
+
+List of commands and output from terminal, used to determine the size of files
+in each directory.
+
+
+
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+The number of characters to be processed before the first start-of-message
+marker is detected is `r cur_position`! `r unname(emoji_name["partying_face"])`
+:::
+:::
+
