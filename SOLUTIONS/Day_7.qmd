@@ -68,11 +68,11 @@ create_level <- function(cur_level, new_name){
     list(
       files = list(),
       level_up = cur_level$name,
-      name = new_name,
+      name = paste0(cur_level$name, "/", new_name),
       children = c()
     )
   )
-  names(new_list) <- new_name
+  names(new_list) <- paste0(cur_level$name, "/", new_name)
   
   # update children
   all_dirs[[cur_level$name]]$children <- c(
@@ -141,8 +141,8 @@ for(cur_line in exmpl_input){
         go_up(cur_level)
         next
       }
-      cat("go down to", cur_line_elements[3], "\n")
-      go_down(cur_level, cur_line_elements[3])
+      cat("go down to", paste0(cur_level$name, "/", cur_line_elements[3]), "\n")
+      go_down(cur_level, paste0(cur_level$name, "/", cur_line_elements[3]))
       next
     }
     next
@@ -168,11 +168,15 @@ str(all_dirs)
 And the total size of the elements in each directory:
 
 ```{r}
+#' @param cur_dir - path to the directory
 get_sum_size_dir <- function(cur_dir){
   cur_sum <- 0
   cur_children <- all_dirs[[cur_dir]]$children
   if(length(cur_children) != 0){
-    cur_sum <- map_dbl(cur_children, get_sum_size_dir) %>% sum()
+    cur_sum <- map_dbl(
+      paste0(cur_dir, "/", cur_children),
+      get_sum_size_dir
+    ) %>% sum()
   }
   
   cur_files <- all_dirs[[cur_dir]]$files
@@ -188,9 +192,16 @@ all_sizes <- map_dbl(all_dirs, function(cur_dir){
 all_sizes
 ```
 
+We want to get the directories with size of at most:
+
+```{r}
+max_dir_size <- 100000
+```
+
+
 ::: {.card .border-success .mb-3}
 ::: {.card-text}
-So, in the example input, the directories that have size of _at most_ 100000 are `print(names(all_sizes)[all_sizes < 100000])`! `r unname(emoji_name["partying_face"])`
+So, in the example input, the directories that have size of _at most_ `r max_dir_size` are `print(names(all_sizes)[all_sizes < max_dir_size])`! `r unname(emoji_name["partying_face"])`
 :::
 :::
 
@@ -222,3 +233,17 @@ cur_level <- all_dirs$start
 ```
 
 
+```{r}
+all_sizes <- map_dbl(all_dirs, function(cur_dir){
+  get_sum_size_dir(cur_dir$name)
+})
+all_dirs_less_max_size <- names(all_sizes)[all_sizes < max_dir_size]
+all_dirs_less_max_size
+```
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+In the full input the suz size of the directories that have size of _at most_ 
+`r max_dir_size` is `r sum(as.numeric(all_sizes[all_dirs_less_max_size]))`! `r unname(emoji_name["partying_face"])`
+:::
+:::
