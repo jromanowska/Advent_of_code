@@ -1,0 +1,24 @@
+---
+title: "Day 10"
+author: "Julia Romanowska"
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(here)
+library(emoji)
+```
+
+## Data
+
+Input is a series of CPU instructions.
+
+
+
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+In the full input the suz size of the directories that have size of _at most_ 
+`r max_dir_size` is `r sum(as.numeric(all_sizes[all_dirs_less_max_size]))`! `r unname(emoji_name["partying_face"])`
+:::
+:::
