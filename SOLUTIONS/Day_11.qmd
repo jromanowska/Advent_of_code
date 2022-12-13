@@ -1,0 +1,40 @@
+---
+title: "Day 10"
+author: "Julia Romanowska"
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(here)
+library(emoji)
+```
+
+## Data
+
+Monkeys `r unname(emoji_name["monkey"])` are having fun with my stuff!!!
+
+## Functions and objects
+
+I will need to create classes, I think.
+
+### `r unname(emoji_name["monkey"])` Monkey
+
+
+
+### `r unname(emoji_name["gift"])` Thing
+
+A class with attributes `worry_level` and `monkey` (which monkey holds it).
+
+```{r}
+new_thing <- function(worry_level, monkey){
+  stopifnot(is.numeric(worry_level))
+  structure(worry_level, monkey = monkey, class = "thing")
+}
+```
+
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+The sum of chosen signal strengths is `r sum_signal_strengths`! `r unname(emoji_name["partying_face"])`
+:::
+:::
