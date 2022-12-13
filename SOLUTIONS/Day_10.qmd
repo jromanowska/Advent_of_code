@@ -1,0 +1,103 @@
+---
+title: "Day 10"
+author: "Julia Romanowska"
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(here)
+library(emoji)
+```
+
+## Data
+
+Input is a series of CPU instructions.
+
+```{r}
+input_file <- here("DATA", "input_day_10.txt")
+
+cat(system(paste0("head ", input_file), intern = TRUE), sep = "\n")
+
+all_instructions <- scan(
+  input_file,
+  what = "character",
+  sep = "\n"
+)
+```
+
+There are two types of instructions:
+
+- `noop` - lasts one cycle and doesn't do anything;
+- `addx V` - lasts two cycles and _after_ two cycles, the X register has 
+increased by `V` (can be also negative)
+
+I will need to follow the cycles and the X register.
+
+## Functions
+
+```{r}
+increase_cycle <- function(){
+  cycle <<- cycle + 1
+}
+
+copy_last_reg <- function(){
+  register[cycle + 1] <<- register[cycle]
+}
+
+add_to_reg <- function(V){
+  register[cycle + 1] <<- register[cycle] + V
+}
+```
+
+## Run cycles
+
+I need to know of only 220 cycles.
+
+```{r}
+register <- rep(NA, 240)
+# register starts with 1
+register[1] <- 1
+head(register)
+```
+
+I will need to start from cycle 1 instead of 0.
+
+```{r}
+start_cycle <- 1
+cycle <- start_cycle
+
+idx <- 1
+copy_last_reg()
+while(idx <= length(all_instructions)){
+  instruction <- all_instructions[idx]
+  
+  if(instruction == "noop"){
+    increase_cycle()
+    copy_last_reg()
+  } else {
+    V <- as.numeric(word(instruction, 2))
+    
+    increase_cycle()
+    copy_last_reg()
+    increase_cycle()
+    add_to_reg(V)
+  }
+  idx <<- idx + 1
+}
+```
+
+## Compute total strength
+
+The signal strength is equal to the multiplication of the X register value and
+cycle number. We focus on cycles: 20, 60, 100, 140, 180, and 220.
+
+```{r}
+chosen_cycles <- c(20, 60, 100, 140, 180, 220)
+sum_signal_strengths <- sum(chosen_cycles*register[chosen_cycles + 1])
+```
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+The sum of chosen signal strengths is `r sum_signal_strengths`! `r unname(emoji_name["partying_face"])`
+:::
+:::

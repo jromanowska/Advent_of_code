@@ -8,7 +8,7 @@
 
 <meta name="author" content="Julia Romanowska">
 
-<title>Advent_of_code - Day 1</title>
+<title>Advent_of_code - Day 10</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -158,8 +158,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data">Data</a></li>
-  <li><a href="#separate-elves" id="toc-separate-elves" class="nav-link" data-scroll-target="#separate-elves">Separate elves</a></li>
-  <li><a href="#count-calories" id="toc-count-calories" class="nav-link" data-scroll-target="#count-calories">Count calories</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
+  <li><a href="#run-cycles" id="toc-run-cycles" class="nav-link" data-scroll-target="#run-cycles">Run cycles</a></li>
+  <li><a href="#compute-total-strength" id="toc-compute-total-strength" class="nav-link" data-scroll-target="#compute-total-strength">Compute total strength</a></li>
   </ul>
 </nav>
     </div>
@@ -168,7 +169,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Day 1</h1>
+<h1 class="title">Day 10</h1>
 </div>
 
 
@@ -190,92 +191,101 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
-<p>The list of calories of all items carried by the elves.</p>
+<p>Input is a series of CPU instructions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_in_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"DATA"</span>, <span class="st">"input_day_01.txt"</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>input_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"DATA"</span>, <span class="st">"input_day_10.txt"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>(calories_raw <span class="ot">&lt;-</span> <span class="fu">read_table</span>(</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  data_in_file,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_names =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">skip_empty_rows =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">system</span>(<span class="fu">paste0</span>(<span class="st">"head "</span>, input_file), <span class="at">intern =</span> <span class="cn">TRUE</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2,240 × 1
-      X1
-   &lt;dbl&gt;
- 1  2991
- 2 13880
- 3 13279
- 4  1514
- 5  9507
- 6    NA
- 7  6544
- 8  9672
- 9 13044
-10  4794
-# … with 2,230 more rows</code></pre>
+<pre><code>noop
+noop
+addx 5
+addx 29
+addx -28
+addx 5
+addx -1
+noop
+noop
+addx 5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>all_instructions <span class="ot">&lt;-</span> <span class="fu">scan</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  input_file,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">"character"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There are two types of instructions:</p>
+<ul>
+<li><code>noop</code> - lasts one cycle and doesn’t do anything;</li>
+<li><code>addx V</code> - lasts two cycles and <em>after</em> two cycles, the X register has increased by <code>V</code> (can be also negative)</li>
+</ul>
+<p>I will need to follow the cycles and the X register.</p>
+</section>
+<section id="functions" class="level2">
+<h2 class="anchored" data-anchor-id="functions">Functions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>increase_cycle <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  cycle <span class="ot">&lt;&lt;-</span> cycle <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>copy_last_reg <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  register[cycle <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;&lt;-</span> register[cycle]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>add_to_reg <span class="ot">&lt;-</span> <span class="cf">function</span>(V){</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  register[cycle <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;&lt;-</span> register[cycle] <span class="sc">+</span> V</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="run-cycles" class="level2">
+<h2 class="anchored" data-anchor-id="run-cycles">Run cycles</h2>
+<p>I need to know of only 220 cycles.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>register <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">240</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># register starts with 1</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>register[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(register)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1 NA NA NA NA NA</code></pre>
 </div>
 </div>
-<p>Each elf inputs the calories their carrying in column, separating their items from the previous ones by an empty line.</p>
-<div class="card border-secondary mb-3">
+<p>I will need to start from cycle 1 instead of 0.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>start_cycle <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>cycle <span class="ot">&lt;-</span> start_cycle</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">copy_last_reg</span>()</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(idx <span class="sc">&lt;=</span> <span class="fu">length</span>(all_instructions)){</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  instruction <span class="ot">&lt;-</span> all_instructions[idx]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(instruction <span class="sc">==</span> <span class="st">"noop"</span>){</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">increase_cycle</span>()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">copy_last_reg</span>()</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    V <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">word</span>(instruction, <span class="dv">2</span>))</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">increase_cycle</span>()</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">copy_last_reg</span>()</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">increase_cycle</span>()</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_to_reg</span>(V)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  idx <span class="ot">&lt;&lt;-</span> idx <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="compute-total-strength" class="level2">
+<h2 class="anchored" data-anchor-id="compute-total-strength">Compute total strength</h2>
+<p>The signal strength is equal to the multiplication of the X register value and cycle number. We focus on cycles: 20, 60, 100, 140, 180, and 220.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>chosen_cycles <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">60</span>, <span class="dv">100</span>, <span class="dv">140</span>, <span class="dv">180</span>, <span class="dv">220</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sum_signal_strengths <span class="ot">&lt;-</span> <span class="fu">sum</span>(chosen_cycles<span class="sc">*</span>register[chosen_cycles <span class="sc">+</span> <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="card border-success mb-3">
 <div class="card-text">
-<p><em>What an idea these elves had! I wonder which programming language they used?!</em></p>
+<p>The sum of chosen signal strengths is 1.492^{4}! 🥳</p>
 </div>
 </div>
-</section>
-<section id="separate-elves" class="level2">
-<h2 class="anchored" data-anchor-id="separate-elves">Separate elves</h2>
-<p>Each <code>NA</code> means new elf.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>calories_new <span class="ot">&lt;-</span> calories_raw <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">calories =</span> X1) <span class="sc">%&gt;%</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">is_na =</span> <span class="fu">is.na</span>(calories)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">which_elf =</span> <span class="fu">cumsum</span>(is_na) <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>calories_new</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2,240 × 3
-   calories is_na which_elf
-      &lt;dbl&gt; &lt;lgl&gt;     &lt;dbl&gt;
- 1     2991 FALSE         1
- 2    13880 FALSE         1
- 3    13279 FALSE         1
- 4     1514 FALSE         1
- 5     9507 FALSE         1
- 6       NA TRUE          2
- 7     6544 FALSE         2
- 8     9672 FALSE         2
- 9    13044 FALSE         2
-10     4794 FALSE         2
-# … with 2,230 more rows</code></pre>
-</div>
-</div>
-</section>
-<section id="count-calories" class="level2">
-<h2 class="anchored" data-anchor-id="count-calories">Count calories</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>calories_new <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(which_elf) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sum_cal =</span> <span class="fu">sum</span>(calories, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sum_cal))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 245 × 2
-   which_elf sum_cal
-       &lt;dbl&gt;   &lt;dbl&gt;
- 1       213   68467
- 2       234   68143
- 3        89   66810
- 4        34   66631
- 5       209   65461
- 6       199   64966
- 7       145   64176
- 8       140   63815
- 9       110   63338
-10       150   63104
-# … with 235 more rows</code></pre>
-</div>
-</div>
-<p>🥳 <strong>TADA!</strong></p>
 
 
 </section>
