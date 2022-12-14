@@ -1,10 +1,11 @@
 ---
-title: "Day 10"
+title: "Day 11"
 author: "Julia Romanowska"
 ---
 
 ```{r setup, include = FALSE}
 library(tidyverse)
+library(rlang)
 library(here)
 library(emoji)
 ```
@@ -19,6 +20,11 @@ I will need to create classes, I think.
 
 ### `r unname(emoji_name["monkey"])` Monkey
 
+```{r}
+new_monkey <- function(id, things, operation, test){
+  structure(id, things, operation, test)
+}
+```
 
 
 ### `r unname(emoji_name["gift"])` Thing
@@ -26,9 +32,27 @@ I will need to create classes, I think.
 A class with attributes `worry_level` and `monkey` (which monkey holds it).
 
 ```{r}
-new_thing <- function(worry_level, monkey){
+new_thing <- function(id, worry_level, monkey){
   stopifnot(is.numeric(worry_level))
-  structure(worry_level, monkey = monkey, class = "thing")
+  structure(id, worry_level, monkey = monkey, class = "thing")
+}
+print.thing <- function(x, ...){
+  cat("This thing (", id, ") is associated with current worry level of ",
+      x$worry_level, " and is being hold by a monkey no.", x$monkey, "\n")
+}
+
+change_worry_level(thing, operation){
+  old <- thing$worry_level
+  new <- NA
+  eval(parse_expr(operation))
+  thing$worry_level <- new
+  return(thing)
+}
+change_monkey_holding(thing, old_monkey, new_monkey){
+  remove_thing(old_monkey, thing$id)
+  add_thing(new_monkey, thing$id)
+  thing$monkey <- new_monkey$id
+  return(thing)
 }
 ```
 
