@@ -20,7 +20,7 @@ I will need to create classes, I think.
 
 ### `r unname(emoji_name["monkey"])` Monkey
 
-```{r}
+```{r, eval=FALSE}
 new_monkey <- function(id, things, operation, test){
   structure(id, things, operation, test)
 }
@@ -31,7 +31,7 @@ new_monkey <- function(id, things, operation, test){
 
 A class with attributes `worry_level` and `monkey` (which monkey holds it).
 
-```{r}
+```{r, eval=FALSE}
 new_thing <- function(id, worry_level, monkey){
   stopifnot(is.numeric(worry_level))
   structure(id, worry_level, monkey = monkey, class = "thing")
@@ -57,8 +57,3 @@ change_monkey_holding(thing, old_monkey, new_monkey){
 ```
 
 
-::: {.card .border-success .mb-3}
-::: {.card-text}
-The sum of chosen signal strengths is `r sum_signal_strengths`! `r unname(emoji_name["partying_face"])`
-:::
-:::
