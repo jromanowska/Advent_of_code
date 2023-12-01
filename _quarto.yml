@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
 
 website:
   title: "Advent_of_code"
@@ -9,6 +11,10 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: YEARS/2022.qmd
+        text: "2022"
+      - href: YEARS/2023.qmd
+        text: "2023"
       - href: https://github.com/jromanowska
         text: GitHub
 

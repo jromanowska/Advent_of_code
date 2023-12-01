@@ -1,0 +1,128 @@
+---
+title: "Year 2023"
+---
+
+My take on the puzzles in 2023 edition of [Advent of Code](https://adventofcode.com/2023).
+
+::: calendar
+::: {.card .border-success .mb-3}
+::: day
+[1](../SOLUTIONS/2023/Day_01.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[2](../SOLUTIONS/2023/Day_02.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[3](../SOLUTIONS/2023/Day_03.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[4](../SOLUTIONS/2023/Day_04.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[5](../SOLUTIONS/2023/Day_05.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[6](../SOLUTIONS/2023/Day_06.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[7](../SOLUTIONS/2023/Day_07.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[8](../SOLUTIONS/2023/Day_08.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[9](../SOLUTIONS/2023/Day_09.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[10](../SOLUTIONS/2023/Day_10.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[11](../SOLUTIONS/2023/Day_11.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[12](../SOLUTIONS/2023/Day_12.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[13](../SOLUTIONS/2023/Day_13.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[14](../SOLUTIONS/2023/Day_14.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[15](../SOLUTIONS/2023/Day_15.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[16](../SOLUTIONS/2023/Day_16.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[17](../SOLUTIONS/2023/Day_17.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[18](../SOLUTIONS/2023/Day_18.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[19](../SOLUTIONS/2023/Day_19.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[20](../SOLUTIONS/2023/Day_20.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[21](../SOLUTIONS/2023/Day_21.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[22](../SOLUTIONS/2023/Day_22.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[23](../SOLUTIONS/2023/Day_23.html)
+:::
+:::
+::: {.card .border-warning .mb-3}
+::: day
+[24](../SOLUTIONS/2023/Day_24.html)
+:::
+:::
+:::
