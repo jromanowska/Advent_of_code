@@ -1,0 +1,160 @@
+---
+title: "Day 1"
+author: "Julia Romanowska"
+jupyter: julia-1.9
+---
+
+```{julia}
+#| label: setup
+#| include: false
+using DataFrames;
+using Markdown;
+```
+
+## The input
+
+There are some numbers in each line, hidden between characters.
+
+```{bash}
+data_in="../../DATA/2023/input_day01.txt"
+head $data_in
+wc -l $data_in
+```
+
+## PART 1
+
+### The puzzle
+
+I need to find the numbers in each line and re-create them. Next, I need to add
+up all the numbers in the document.
+
+```{julia}
+input_file = open("../../DATA/2023/input_day01.txt", "r");
+line = readline(input_file);
+
+all_numbers = Int32[];
+while line != ""
+    split_line = split(line, "");
+    current_numbers = [];
+    for sign ∈ split_line
+        try
+            push!(current_numbers, parse(Int, sign));
+        catch err
+        end
+    end
+    out_number = parse(
+        Int,
+        string(first(current_numbers), last(current_numbers))
+    )
+    push!(all_numbers, out_number);
+
+    # read the next line:
+    global line = readline(input_file);
+end
+
+close(input_file);
+```
+
+### The solution
+
+Now, I have all the numbers:
+
+```{julia}
+all_numbers
+```
+
+```{julia}
+#| echo: false
+sum_all_num = sum(all_numbers);
+Markdown.parse("""
+The sum of these numbers is $sum_all_num.
+""")
+```
+
+## PART 2
+
+The task is more difficult than I thought! :D
+
+The numbers can also be spelled: `one`, `two`, `three`, `four`, `five`, `six`,
+`seven`, `eight`, or `nine`.
+
+```{julia}
+input_file = open("../../DATA/2023/input_day01.txt", "r");
+line = readline(input_file);
+
+all_numbers = Int32[];
+all_spelled_numbers = Dict(
+    "one" => 1, "two" => 2, "three" => 3, "four" => 4, "five" => 5,
+    "six" => 6, "seven" => 7, "eight" => 8, "nine" => 9
+);
+while line != ""
+    current_numbers = DataFrame(
+        index = -1;
+        number = -1
+    );
+    # first - check spelled numbers
+    for spelled_num ∈ keys(all_spelled_numbers)
+        if occursin(spelled_num, line)
+            first_idx = first(findfirst(spelled_num, line));
+            last_idx = first(findlast(spelled_num, line));
+            cur_number = all_spelled_numbers[spelled_num];
+            if first_idx != last_idx
+                append!(current_numbers, DataFrame(
+                    index = [first_idx, last_idx],
+                    number = [cur_number, cur_number]
+                ));
+            else
+                append!(current_numbers, DataFrame(
+                    index = first_idx,
+                    number = cur_number
+                ));
+            end
+        end
+    end
+    # then - check digits
+    for digit_num ∈ values(all_spelled_numbers)
+        if occursin(string(digit_num), line)
+            first_idx = first(findfirst(string(digit_num), line));
+            last_idx = first(findlast(string(digit_num), line));
+            if first_idx != last_idx
+                append!(current_numbers, DataFrame(
+                    index = [first_idx, last_idx],
+                    number = [digit_num, digit_num]
+                ));
+            else
+                append!(current_numbers, DataFrame(
+                    index = first_idx,
+                    number = digit_num
+                ));
+            end
+        end
+    end
+
+    # first row was used only to set the types of columns correctly
+    deleteat!(current_numbers, 1)
+    sort!(current_numbers, order(:index))
+    out_number = parse(Int, string(first(current_numbers.number), last(current_numbers.number)))
+    push!(all_numbers, out_number);
+
+    # read the next line:
+    global line = readline(input_file);
+end
+
+close(input_file);
+```
+
+### The solution
+
+Now, I have all the numbers:
+
+```{julia}
+all_numbers
+```
+
+```{julia}
+#| echo: false
+sum_all_num = sum(all_numbers);
+Markdown.parse("""
+The sum of these numbers is $sum_all_num.
+""")
+```

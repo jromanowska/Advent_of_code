@@ -1,0 +1,118 @@
+---
+title: "Day 5"
+author: "Julia Romanowska"
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(here)
+library(emoji)
+```
+
+## Data
+
+The input is one file, but two parts:
+
+- first, the order of crates in stacks
+- next, the movement procedure
+
+```{r}
+input_file_path <- here("DATA", "2022", "input_day_05.txt")
+
+cat(system(paste("head", input_file_path), intern = TRUE), sep = "\n")
+```
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+I should probably create a nice code where I read in the input and convert it
+to the list of vectors, but I don't have time now `r unname(emoji_name["sunglasses"])`
+:::
+:::
+
+I have splitted the input file to get separate input for the stacks and for the
+instructions.
+
+```{r}
+system("./Day_5_split_input.sh")
+list.files(here("DATA"))
+
+(instructions <- read_table(
+  here("DATA", "2022", "input_day_05_instructions.txt"),
+  show_col_types = FALSE,
+  col_names = FALSE
+))
+
+instructions <- instructions %>%
+  select(move_how_many = X2, from = X4, to = X6)
+```
+
+Now, creating a list of vectors for the initial stack of crates.
+
+```{r}
+init_stacks <- list(
+  stack1 = c("F", "D", "B", "Z", "T", "J", "R", "N"),
+  stack2 = c("R", "S", "N", "J", "H"),
+  stack3 = c("C", "R", "N", "J", "G", "Z", "F", "Q"),
+  stack4 = c("F", "V", "N", "G", "R", "T", "Q"),
+  stack5 = c("L", "T", "Q", "F"),
+  stack6 = c("Q", "C", "W", "Z", "B", "R", "G", "N"),
+  stack7 = c("F", "C", "L", "S", "N", "H", "M"),
+  stack8 = c("D", "N", "Q", "M", "T", "J"),
+  stack9 = c("P", "G", "S")
+)
+```
+
+## Functions
+
+This looks like we need some type queue function:
+
+```{r}
+push_back <- function(stacks, from, to){
+  stack_name_from <- paste0("stack", from)
+  stack_name_to <- paste0("stack", to)
+  
+  length_from <- length(stacks[[stack_name_from]])
+  
+  crate_to_move <- stacks[[stack_name_from]][length_from]
+  new_stacks <- stacks
+  new_stacks[[stack_name_from]] <- stacks[[stack_name_from]][-length_from]
+  new_stacks[[stack_name_to]] <- c(stacks[[stack_name_to]], crate_to_move)
+  
+  return(new_stacks)
+}
+```
+
+## Rearranging
+
+This is best in base R...
+
+```{r}
+cur_stacks <- init_stacks
+
+for(i in nrow(instructions)){
+  cur_instruction <- instructions[i,]
+
+  for(j in 1:(cur_instruction$move_how_many)){
+    cur_stacks <<- push_back(cur_stacks, cur_instruction$from, cur_instruction$to)
+  }
+}
+cur_stacks
+```
+
+## What's on top?
+
+```{r}
+top_crates <- map_chr(
+  cur_stacks,
+  function(stack){
+    l_stack <- length(stack)
+    return(stack[l_stack])
+  }
+)
+```
+
+::: {.card .border-success .mb-3}
+::: {.card-text}
+The last crates on all stacks: `r paste(top_crates, collapse = "")`! Wrong? `r unname(emoji_name["thinking_face"])`
+:::
+:::

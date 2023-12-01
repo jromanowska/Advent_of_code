@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Julia Romanowska">
+
+<title>Advent_of_code - Day 7</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Advent_of_code</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../YEARS/2022.html" rel="" target="">
+ <span class="menu-text">2022</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../YEARS/2023.html" rel="" target="">
+ <span class="menu-text">2023</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/jromanowska" rel="" target="">
+ <span class="menu-text">GitHub</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data">Data</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
+  <li><a href="#test" id="toc-test" class="nav-link" data-scroll-target="#test">Test</a></li>
+  <li><a href="#real-run" id="toc-real-run" class="nav-link" data-scroll-target="#real-run">Real run</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Day 7</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Julia Romanowska </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>List of commands and output from terminal, used to determine the size of files in each directory.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>input_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"DATA"</span>, <span class="st">"2022"</span>, <span class="st">"input_day_07.txt"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">scan</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  input_file,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">"character"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">nmax =</span> <span class="dv">10</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">cat</span>(<span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$ cd /
+$ ls
+dir gqlg
+dir hchrwstr
+dir lswlpt
+189381 mzsnhlf
+dir plmdrbn
+dir rjwmjd
+dir stqq
+93174 zfn</code></pre>
+</div>
+</div>
+<p>I will construct a structure to hold all the information:</p>
+<ul>
+<li>all the directories will be held in one list,</li>
+<li>each directory is a list, holding:
+<ul>
+<li>pointer to the parent directory,</li>
+<li>pointers to children-directories,</li>
+<li>list of files</li>
+</ul></li>
+</ul>
+</section>
+<section id="functions" class="level2">
+<h2 class="anchored" data-anchor-id="functions">Functions</h2>
+<p>I will need several small functions:</p>
+<ul>
+<li><p><code>cd /</code> - this is starting from top; this is used only once in the input, so I can ignore this line</p></li>
+<li><p><code>cd ..</code> - go up in the list-levels</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>go_up <span class="ot">&lt;-</span> <span class="cf">function</span>(cur_level){</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  cur_level <span class="ot">&lt;&lt;-</span> all_dirs[[cur_level<span class="sc">$</span>level_up]]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><code>cd xxx</code> - go down in the list-levels, to the list named <code>xxx</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>go_down <span class="ot">&lt;-</span> <span class="cf">function</span>(cur_level, new_level){</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  cur_level <span class="ot">&lt;&lt;-</span> all_dirs[[new_level]]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p><code>ls</code> - list everything, read all the lines until next one that starts with <code>$</code> and do one of the following actions:</p>
+<ul>
+<li><code>dir xxx</code> - create a list named <code>xxx</code></li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>create_level <span class="ot">&lt;-</span> <span class="cf">function</span>(cur_level, new_name){</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># new level needs to contain list of files within this dir., and reference</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  to the level up</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  new_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">files =</span> <span class="fu">list</span>(),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">level_up =</span> cur_level<span class="sc">$</span>name,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> <span class="fu">paste0</span>(cur_level<span class="sc">$</span>name, <span class="st">"/"</span>, new_name),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">children =</span> <span class="fu">c</span>()</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(new_list) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(cur_level<span class="sc">$</span>name, <span class="st">"/"</span>, new_name)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># update children</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  all_dirs[[cur_level<span class="sc">$</span>name]]<span class="sc">$</span>children <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    all_dirs[[cur_level<span class="sc">$</span>name]]<span class="sc">$</span>children, new_name</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># append new list</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  all_dirs <span class="ot">&lt;&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    all_dirs,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    new_list</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>- `123 xxx` - add element to the 'files' list in the current list, with
+`123` as the value (size of the file)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>create_element <span class="ot">&lt;-</span> <span class="cf">function</span>(cur_level, new_el, new_name){</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  new_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">as.numeric</span>(new_el))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(new_list) <span class="ot">&lt;-</span> new_name</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  cur_level_name <span class="ot">&lt;-</span> cur_level<span class="sc">$</span>name</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  all_dirs[[cur_level_name]]<span class="sc">$</span>files <span class="ot">&lt;&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    all_dirs[[cur_level_name]]<span class="sc">$</span>files, new_list</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># update the pointer</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  cur_level <span class="ot">&lt;&lt;-</span> all_dirs[[cur_level_name]]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test" class="level2">
+<h2 class="anchored" data-anchor-id="test">Test</h2>
+<p>I will test it on the example input.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(exmpl_input <span class="ot">&lt;-</span> <span class="fu">scan</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">here</span>(<span class="st">"DATA"</span>, <span class="st">"2022"</span>, <span class="st">"small_input_day_07.txt"</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">"character"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span> <span class="fu">cat</span>(<span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$ cd /
+$ ls
+dir a
+14848514 b.txt
+8504156 c.dat
+dir d
+$ cd a
+$ ls
+dir e
+29116 f
+2557 g
+62596 h.lst
+$ cd e
+$ ls
+dir z
+584 i
+$ cd z
+$ ls
+$ cd ..
+$ cd ..
+$ cd ..
+$ cd d
+$ ls
+4060174 j
+8033020 d.log
+5626152 d.ext
+7214296 k</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>exmpl_input <span class="ot">&lt;-</span> exmpl_input[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>new_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">files =</span> <span class="fu">list</span>(),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">level_up =</span> <span class="cn">NULL</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"start"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">children =</span> <span class="fu">c</span>()</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(new_list) <span class="ot">&lt;-</span> <span class="st">"start"</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>all_dirs <span class="ot">&lt;-</span> new_list</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>cur_level <span class="ot">&lt;-</span> all_dirs<span class="sc">$</span>start</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(cur_line <span class="cf">in</span> exmpl_input){</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  cur_line_elements <span class="ot">&lt;-</span> <span class="fu">str_split</span>(cur_line, <span class="at">pattern =</span> <span class="st">" "</span>) <span class="sc">%&gt;%</span> <span class="fu">unlist</span>()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(cur_line_elements[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"$"</span>){</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># check whether it's 'ls' or 'cd'</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(cur_line_elements[<span class="dv">2</span>] <span class="sc">==</span> <span class="st">"cd"</span>){</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      <span class="co"># go level up or down</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(cur_line_elements[<span class="dv">3</span>] <span class="sc">==</span> <span class="st">".."</span>){</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">"go up</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">go_up</span>(cur_level)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">next</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cat</span>(<span class="st">"go down to"</span>, <span class="fu">paste0</span>(cur_level<span class="sc">$</span>name, <span class="st">"/"</span>, cur_line_elements[<span class="dv">3</span>]), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">go_down</span>(cur_level, <span class="fu">paste0</span>(cur_level<span class="sc">$</span>name, <span class="st">"/"</span>, cur_line_elements[<span class="dv">3</span>]))</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">next</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(cur_line_elements[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"dir"</span>){</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cat</span>(<span class="st">"create level: "</span>, cur_line_elements[<span class="dv">2</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">create_level</span>(cur_level, cur_line_elements[<span class="dv">2</span>])</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># this means that it's the size of the file in this directory</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"create element: "</span>, cur_line_elements[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">create_element</span>(cur_level, cur_line_elements[<span class="dv">1</span>], cur_line_elements[<span class="dv">2</span>])</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>create level:  a 
+create element:  14848514 b.txt 
+create element:  8504156 c.dat 
+create level:  d 
+go down to start/a 
+create level:  e 
+create element:  29116 f 
+create element:  2557 g 
+create element:  62596 h.lst 
+go down to start/a/e 
+create level:  z 
+create element:  584 i 
+go down to start/a/e/z 
+go up
+go up
+go up
+go down to start/d 
+create element:  4060174 j 
+create element:  8033020 d.log 
+create element:  5626152 d.ext 
+create element:  7214296 k </code></pre>
+</div>
+</div>
+<p>The directory structure looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(all_dirs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 5
+ $ start      :List of 4
+  ..$ files   :List of 2
+  .. ..$ b.txt: num 14848514
+  .. ..$ c.dat: num 8504156
+  ..$ level_up: NULL
+  ..$ name    : chr "start"
+  ..$ children: chr [1:2] "a" "d"
+ $ start/a    :List of 4
+  ..$ files   :List of 3
+  .. ..$ f    : num 29116
+  .. ..$ g    : num 2557
+  .. ..$ h.lst: num 62596
+  ..$ level_up: chr "start"
+  ..$ name    : chr "start/a"
+  ..$ children: chr "e"
+ $ start/d    :List of 4
+  ..$ files   :List of 4
+  .. ..$ j    : num 4060174
+  .. ..$ d.log: num 8033020
+  .. ..$ d.ext: num 5626152
+  .. ..$ k    : num 7214296
+  ..$ level_up: chr "start"
+  ..$ name    : chr "start/d"
+  ..$ children: NULL
+ $ start/a/e  :List of 4
+  ..$ files   :List of 1
+  .. ..$ i: num 584
+  ..$ level_up: chr "start/a"
+  ..$ name    : chr "start/a/e"
+  ..$ children: chr "z"
+ $ start/a/e/z:List of 4
+  ..$ files   : list()
+  ..$ level_up: chr "start/a/e"
+  ..$ name    : chr "start/a/e/z"
+  ..$ children: NULL</code></pre>
+</div>
+</div>
+<p>And the total size of the elements in each directory:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param cur_dir - path to the directory</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>get_sum_size_dir <span class="ot">&lt;-</span> <span class="cf">function</span>(cur_dir){</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  cur_sum <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  cur_children <span class="ot">&lt;-</span> all_dirs[[cur_dir]]<span class="sc">$</span>children</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(cur_children) <span class="sc">!=</span> <span class="dv">0</span>){</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    cur_sum <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(cur_dir, <span class="st">"/"</span>, cur_children),</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>      get_sum_size_dir</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> <span class="fu">sum</span>()</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  cur_files <span class="ot">&lt;-</span> all_dirs[[cur_dir]]<span class="sc">$</span>files</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(cur_files) <span class="sc">!=</span> <span class="dv">0</span>){</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    cur_sum <span class="ot">&lt;-</span> cur_sum <span class="sc">+</span> <span class="fu">sum</span>(<span class="fu">unlist</span>(cur_files))</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(cur_sum)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>all_sizes <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(all_dirs, <span class="cf">function</span>(cur_dir){</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_sum_size_dir</span>(cur_dir<span class="sc">$</span>name)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>all_sizes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      start     start/a     start/d   start/a/e start/a/e/z 
+   48381165       94853    24933642         584           0 </code></pre>
+</div>
+</div>
+<p>We want to get the directories with size of at most:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>max_dir_size <span class="ot">&lt;-</span> <span class="dv">100000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="card border-success mb-3">
+<div class="card-text">
+<p>So, in the example input, the directories that have size of <em>at most</em> 10^{5} are <code>print(names(all_sizes)[all_sizes &lt; max_dir_size])</code>! 🥳</p>
+</div>
+</div>
+</section>
+<section id="real-run" class="level2">
+<h2 class="anchored" data-anchor-id="real-run">Real run</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(exmpl_input <span class="ot">&lt;-</span> <span class="fu">scan</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">here</span>(<span class="st">"DATA"</span>, <span class="st">"2022"</span>, <span class="st">"input_day_07.txt"</span>),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">"character"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span> <span class="fu">cat</span>(<span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$ cd /
+$ ls
+dir gqlg
+dir hchrwstr
+dir lswlpt
+189381 mzsnhlf
+dir plmdrbn
+dir rjwmjd
+dir stqq
+93174 zfn
+dir zjhqnlrr
+dir zssdlnc
+$ cd gqlg
+$ ls
+187654 cfrdsjf
+100589 ntvmgbw
+46922 zcmfcjhf.tzw
+$ cd ..
+$ cd hchrwstr
+$ ls</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>exmpl_input <span class="ot">&lt;-</span> exmpl_input[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>new_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">files =</span> <span class="fu">list</span>(),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">level_up =</span> <span class="cn">NULL</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"start"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">children =</span> <span class="fu">c</span>()</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(new_list) <span class="ot">&lt;-</span> <span class="st">"start"</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>all_dirs <span class="ot">&lt;-</span> new_list</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>cur_level <span class="ot">&lt;-</span> all_dirs<span class="sc">$</span>start</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(cur_line <span class="cf">in</span> exmpl_input){</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  cur_line_elements <span class="ot">&lt;-</span> <span class="fu">str_split</span>(cur_line, <span class="at">pattern =</span> <span class="st">" "</span>) <span class="sc">%&gt;%</span> <span class="fu">unlist</span>()</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(cur_line_elements[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"$"</span>){</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># check whether it's 'ls' or 'cd'</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(cur_line_elements[<span class="dv">2</span>] <span class="sc">==</span> <span class="st">"cd"</span>){</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>      <span class="co"># go level up or down</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(cur_line_elements[<span class="dv">3</span>] <span class="sc">==</span> <span class="st">".."</span>){</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">"go up</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">go_up</span>(cur_level)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">next</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cat</span>(<span class="st">"go down to"</span>, <span class="fu">paste0</span>(cur_level<span class="sc">$</span>name, <span class="st">"/"</span>, cur_line_elements[<span class="dv">3</span>]), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">go_down</span>(cur_level, <span class="fu">paste0</span>(cur_level<span class="sc">$</span>name, <span class="st">"/"</span>, cur_line_elements[<span class="dv">3</span>]))</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">next</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(cur_line_elements[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"dir"</span>){</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cat</span>(<span class="st">"create level: "</span>, cur_line_elements[<span class="dv">2</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">create_level</span>(cur_level, cur_line_elements[<span class="dv">2</span>])</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># this means that it's the size of the file in this directory</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"create element: "</span>, cur_line_elements[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">create_element</span>(cur_level, cur_line_elements[<span class="dv">1</span>], cur_line_elements[<span class="dv">2</span>])</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>create level:  gqlg 
+create level:  hchrwstr 
+create level:  lswlpt 
+create element:  189381 mzsnhlf 
+create level:  plmdrbn 
+create level:  rjwmjd 
+create level:  stqq 
+create element:  93174 zfn 
+create level:  zjhqnlrr 
+create level:  zssdlnc 
+go down to start/gqlg 
+create element:  187654 cfrdsjf 
+create element:  100589 ntvmgbw 
+create element:  46922 zcmfcjhf.tzw 
+go up
+go down to start/hchrwstr 
+create element:  227766 cljjlcp.pjh 
+create element:  102770 rdbrcf.pjl 
+create element:  9887 rfnjn.lqn 
+create level:  rzsrp 
+create level:  shlhgj 
+create level:  slwwgc 
+go down to start/hchrwstr/rzsrp 
+create level:  rzsrp 
+go down to start/hchrwstr/rzsrp/rzsrp 
+create level:  dvzvmsjz 
+create element:  208001 tnflwcsn 
+create level:  zfn 
+go down to start/hchrwstr/rzsrp/rzsrp/dvzvmsjz 
+create element:  149823 hvgbhm.zsc 
+go up
+go down to start/hchrwstr/rzsrp/rzsrp/zfn 
+create element:  292424 gqlg.tzc 
+go up
+go up
+go up
+go down to start/hchrwstr/shlhgj 
+create element:  61753 fzpzwjdt.jvl 
+create element:  195204 jjhc.tzr 
+create element:  288094 zcmfcjhf.tzw 
+go up
+go down to start/hchrwstr/slwwgc 
+create element:  118185 jjhc.tzr 
+create element:  291916 jwnw.wqv 
+create element:  116377 ptlz 
+create element:  300849 pzjpw.hwg 
+create element:  28679 zfn.grz 
+go up
+go up
+go down to start/lswlpt 
+create element:  124160 dbnlt.rqz 
+create element:  154412 sfd 
+go up
+go down to start/plmdrbn 
+create level:  fmzjhrq 
+create element:  224144 rlc.qns 
+create element:  2985 zcmfcjhf.tzw 
+go down to start/plmdrbn/fmzjhrq 
+create element:  9749 lqj.szc 
+create level:  rrjjsvm 
+go down to start/plmdrbn/fmzjhrq/rrjjsvm 
+create element:  66652 zcmfcjhf.tzw 
+go up
+go up
+go up
+go down to start/rjwmjd 
+create level:  twcrf 
+create element:  125294 zpfws.ctc 
+create level:  zwmmrqj 
+go down to start/rjwmjd/twcrf 
+create element:  229364 tnflwcsn 
+create element:  262716 zcmfcjhf.tzw 
+go up
+go down to start/rjwmjd/zwmmrqj 
+create element:  11466 gqlg.ftg 
+create element:  220272 lflcgss.jrm 
+create element:  79574 tnflwcsn 
+go up
+go up
+go down to start/stqq 
+create element:  185160 cwjqldbf.cnm 
+create element:  266439 dpg.pwn 
+create level:  hpgbcvtb 
+create element:  139357 jvps 
+create level:  llbthqc 
+create element:  250148 mctn.dqw 
+create level:  rzsrp 
+create element:  22196 tnflwcsn 
+create level:  whmdbn 
+go down to start/stqq/hpgbcvtb 
+create element:  231579 fvjjtd.wdb 
+create element:  168118 gjdtscqs 
+create element:  113434 ldbqbg 
+create level:  mqjfvg 
+create element:  182214 nnnr 
+create element:  112389 pqqdt.wnn 
+go down to start/stqq/hpgbcvtb/mqjfvg 
+create element:  170328 gqlg.jjc 
+go up
+go up
+go down to start/stqq/llbthqc 
+create element:  25611 bftwd.qrr 
+create element:  91550 tnflwcsn 
+go up
+go down to start/stqq/rzsrp 
+create element:  272315 wrsfh.pzd 
+create element:  123877 zcmfcjhf.tzw 
+go up
+go down to start/stqq/whmdbn 
+create element:  29628 jjhc.tzr 
+create element:  65193 mrhb 
+go up
+go up
+go down to start/zjhqnlrr 
+create level:  bzzvj 
+create level:  ddzmvh 
+create level:  dsjd 
+create element:  180806 fqz.dch 
+create level:  nnzvl 
+create element:  109161 rptmqt 
+create element:  6463 rzsrp.sjf 
+create element:  111549 rzsrp.wwz 
+create element:  241532 zfn 
+go down to start/zjhqnlrr/bzzvj 
+create element:  278759 gqlg.nsn 
+create element:  174223 mvggzqrq 
+create element:  156518 tnflwcsn 
+create level:  wjtlg 
+create level:  zfn 
+go down to start/zjhqnlrr/bzzvj/wjtlg 
+create element:  52198 fvqbtm.tch 
+create element:  44881 tnflwcsn 
+go up
+go down to start/zjhqnlrr/bzzvj/zfn 
+create element:  22926 tnflwcsn 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh 
+create level:  cpvfln 
+create element:  180764 gqlg.bjq 
+create level:  hgrnmh 
+create element:  186254 hgrnmh.tpr 
+create level:  hjpgf 
+create level:  mghmb 
+create level:  pvdwhmcr 
+create element:  256578 rzsrp 
+create element:  269955 shlhgj 
+create element:  172163 vrr.nnm 
+go down to start/zjhqnlrr/ddzmvh/cpvfln 
+create element:  87025 hgrnmh.lvr 
+create element:  187453 rwmq.dph 
+create level:  sthhc 
+go down to start/zjhqnlrr/ddzmvh/cpvfln/sthhc 
+create element:  289580 fdzwmfnf 
+create element:  57504 hgrnmh.vqj 
+create element:  277639 mzcfchr.mch 
+create level:  slsj 
+create level:  vsvvprg 
+create element:  94836 zqglfrl 
+go down to start/zjhqnlrr/ddzmvh/cpvfln/sthhc/slsj 
+create element:  178013 hdjgtqt 
+go up
+go down to start/zjhqnlrr/ddzmvh/cpvfln/sthhc/vsvvprg 
+create element:  102783 fvqbtm.tch 
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/hgrnmh 
+create level:  mrnmbbt 
+create element:  240216 rzsrp.nfg 
+go down to start/zjhqnlrr/ddzmvh/hgrnmh/mrnmbbt 
+create element:  245579 gqlg 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/hjpgf 
+create element:  257544 cjfd.wdq 
+create element:  296077 jjhc.tzr 
+create element:  195752 zcmfcjhf.tzw 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb 
+create level:  bgrcsdc 
+create level:  btjq 
+create level:  gqlg 
+create level:  gtwdqw 
+create level:  hgrnmh 
+create level:  jts 
+create level:  jvp 
+create level:  jvrjcv 
+create element:  206272 pgf.rgj 
+create element:  130746 tnflwcsn 
+create element:  256698 zfn.dhl 
+go down to start/zjhqnlrr/ddzmvh/mghmb/bgrcsdc 
+create element:  235762 lflcgss.jrm 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq 
+create level:  bvrcqb 
+create level:  drslln 
+create level:  dwzpblb 
+create level:  gqlg 
+create level:  hgrnmh 
+create level:  hvb 
+create level:  rqtc 
+create level:  vsdz 
+create level:  wrnftqh 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/bvrcqb 
+create element:  51508 gjjg.msw 
+create level:  gqlg 
+create element:  13206 pdwn 
+create element:  10427 vbw 
+create element:  6909 zfn.ztq 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/bvrcqb/gqlg 
+create element:  20816 cmgcvlh.mzs 
+create element:  10358 fvqbtm.tch 
+create element:  215142 rzsrp.dns 
+create element:  192153 wdjdppzm 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/drslln 
+create element:  258102 tnflwcsn 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/dwzpblb 
+create element:  302466 fvqbtm.tch 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/gqlg 
+create level:  hnr 
+create level:  mdzdht 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/gqlg/hnr 
+create level:  fjd 
+create element:  159298 fvqbtm.tch 
+create element:  46324 gchdll.nrm 
+create element:  287907 lflcgss.jrm 
+create level:  mqp 
+create element:  140272 twdff 
+create element:  47399 zfn 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/gqlg/hnr/fjd 
+create element:  227109 fvqbtm.tch 
+create element:  223413 wdsfwwwm.rmd 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/gqlg/hnr/mqp 
+create level:  rzsrp 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/gqlg/hnr/mqp/rzsrp 
+create level:  pgwng 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/gqlg/hnr/mqp/rzsrp/pgwng 
+create element:  218271 hgrnmh.gnf 
+go up
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/gqlg/mdzdht 
+create level:  gqlg 
+create level:  tvd 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/gqlg/mdzdht/gqlg 
+create level:  gfjqbdp 
+create element:  108335 jjhc.tzr 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/gqlg/mdzdht/gqlg/gfjqbdp 
+create element:  143536 fzvn.jtv 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/gqlg/mdzdht/tvd 
+create element:  238491 wsjmrlqv.bwb 
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/hgrnmh 
+create element:  265289 lflcgss.jrm 
+create element:  111283 thb 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/hvb 
+create level:  hgrnmh 
+create level:  smmwg 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/hvb/hgrnmh 
+create level:  wpvssts 
+create element:  84939 zcmfcjhf.tzw 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/hvb/hgrnmh/wpvssts 
+create element:  305634 whcmr 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/hvb/smmwg 
+create element:  36722 cvdbwg.rll 
+create element:  16840 nnhbcbwz 
+create level:  rzsrp 
+create element:  9405 zfn.jzr 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/hvb/smmwg/rzsrp 
+create level:  fzsngr 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/hvb/smmwg/rzsrp/fzsngr 
+create element:  142687 zcmfcjhf.tzw 
+go up
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc 
+create level:  pbzhfsg 
+create level:  rzsrp 
+create level:  shlhgj 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/pbzhfsg 
+create element:  41865 hpshz.sdf 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp 
+create level:  gqlg 
+create level:  mbsjjzft 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/gqlg 
+create level:  gqlg 
+create level:  nvjqp 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/gqlg/gqlg 
+create element:  21860 tnflwcsn 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/gqlg/nvjqp 
+create level:  gcq 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/gqlg/nvjqp/gcq 
+create level:  mslhm 
+create level:  rzsrp 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/gqlg/nvjqp/gcq/mslhm 
+create element:  41304 rpgvllw.zfj 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/gqlg/nvjqp/gcq/rzsrp 
+create element:  290199 ddsnt 
+go up
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft 
+create element:  47727 ggpmg.pps 
+create level:  stgszvmj 
+create element:  275954 tnflwcsn 
+create element:  248613 vbgnwh.sjz 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj 
+create level:  dthcrbmr 
+create level:  shlhgj 
+create element:  206580 zcmfcjhf.tzw 
+create level:  zfn 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/dthcrbmr 
+create level:  lhp 
+create level:  npf 
+create level:  qbgrjr 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/dthcrbmr/lhp 
+create element:  37925 hgrnmh.lvm 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/dthcrbmr/npf 
+create element:  77162 bqvd 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/dthcrbmr/qbgrjr 
+create element:  48767 fvqbtm.tch 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/shlhgj 
+create level:  wtlngn 
+create element:  35422 zfn 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/shlhgj/wtlngn 
+create level:  gqlg 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/shlhgj/wtlngn/gqlg 
+create element:  64761 fwtqw 
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/zfn 
+create element:  47247 dmlr.flv 
+create element:  259570 htvn.rbz 
+create element:  149238 qrdw 
+go up
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/shlhgj 
+create level:  cjmv 
+create level:  tns 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/shlhgj/cjmv 
+create element:  140919 jjhc.tzr 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/shlhgj/tns 
+create element:  248127 fvqbtm.tch 
+create element:  216202 pwg 
+create level:  qhhtgsvz 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/shlhgj/tns/qhhtgsvz 
+create element:  68979 fvqbtm.tch 
+go up
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/vsdz 
+create element:  224491 hgrnmh 
+create level:  jsrqjjtc 
+create level:  shlhgj 
+create element:  123062 zfn.gss 
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/vsdz/jsrqjjtc 
+create element:  245991 phc 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/vsdz/shlhgj 
+create element:  284208 ctwmwlp.lnm 
+create element:  11067 vwsrmlf.dvz 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/btjq/wrnftqh 
+create element:  237658 lldrh 
+create element:  14804 nszc.wdf 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/gqlg 
+create element:  211474 jjhc.tzr 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/gtwdqw 
+create element:  92613 fvqbtm.tch 
+create element:  206813 ppzhmnb.grd 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/hgrnmh 
+create element:  249351 bftm 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/jts 
+create element:  132190 gqlg.vnn 
+create element:  208091 ldnq 
+create element:  202593 zcmfcjhf.tzw 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/jvp 
+create element:  258220 lflcgss.jrm 
+go up
+go down to start/zjhqnlrr/ddzmvh/mghmb/jvrjcv 
+create element:  20148 dzzlwp.bdj 
+create element:  289774 hgrnmh.bvc 
+create element:  296981 jwscd.cvj 
+create element:  16617 tbnwvcl.tlv 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr 
+create level:  bhmmsbmb 
+create level:  bjwbvcq 
+create level:  hgrnmh 
+create level:  ltvtrtth 
+create level:  prtqcb 
+create level:  rmn 
+create level:  shlhgj 
+create level:  tmzcmb 
+create level:  vlbqvps 
+create level:  wmmfp 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/bhmmsbmb 
+create level:  nccjwf 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/bhmmsbmb/nccjwf 
+create level:  drwhjfjn 
+create element:  206638 lflcgss.jrm 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/bhmmsbmb/nccjwf/drwhjfjn 
+create element:  291772 zcmfcjhf.tzw 
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/bjwbvcq 
+create level:  zfn 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/bjwbvcq/zfn 
+create element:  303808 wrbldbd 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/hgrnmh 
+create element:  142765 fvqbtm.tch 
+create element:  159497 scqf.scf 
+create element:  270819 zcmfcjhf.tzw 
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth 
+create level:  fwtwqvn 
+create element:  156894 jnmqdq.zgp 
+create element:  297860 lflcgss.jrm 
+create level:  mcgcc 
+create level:  zfn 
+create element:  179328 zfn.vnn 
+create level:  zzsnz 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/fwtwqvn 
+create level:  rqndc 
+create level:  rzsrp 
+create element:  124999 rzsrp.tvr 
+create level:  shlhgj 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/fwtwqvn/rqndc 
+create element:  45124 zrcv 
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/fwtwqvn/rzsrp 
+create element:  74041 rzsrp 
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/fwtwqvn/shlhgj 
+create element:  117219 qptfpz.cgc 
+create element:  281188 shlhgj.bhd 
+create element:  121750 sptql 
+create element:  173637 vqp.dbs 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/mcgcc 
+create element:  18295 gqlg 
+create level:  ngvwhnvf 
+create element:  177283 rjsrn.rlq 
+create element:  54239 rzsrp.tfq 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/mcgcc/ngvwhnvf 
+create element:  207616 jjhc.tzr 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/zfn 
+create level:  cwzbljh 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/zfn/cwzbljh 
+create element:  134952 hmchpgn.nwf 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/zzsnz 
+create element:  273014 shlhgj.pls 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/prtqcb 
+create level:  dtr 
+create level:  rzsrp 
+create element:  199012 tnflwcsn 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/prtqcb/dtr 
+create level:  gqlg 
+create level:  grwpbs 
+create level:  hgrnmh 
+create element:  115701 lflcgss.jrm 
+create element:  247838 tnflwcsn 
+create element:  268721 zcmfcjhf.tzw 
+create element:  15320 zwcd.dqb 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/prtqcb/dtr/gqlg 
+create element:  285009 jjhc.tzr 
+create element:  125691 nhnlcjjt.zlj 
+create element:  54424 rzsrp.rll 
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/prtqcb/dtr/grwpbs 
+create element:  59390 rzsrp.cms 
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/prtqcb/dtr/hgrnmh 
+create element:  185747 lvtnqqdh.nzq 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/prtqcb/rzsrp 
+create element:  268631 hvvpfd.smn 
+create element:  263890 tcrctpb.pcc 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/rmn 
+create level:  gtnvc 
+create element:  205894 hqb.fwh 
+create element:  280887 lvvmjb.scj 
+create level:  rsnqlfsz 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/rmn/gtnvc 
+create element:  28523 jjhc.tzr 
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/rmn/rsnqlfsz 
+create level:  hgrnmh 
+create level:  nsfhtthc 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/rmn/rsnqlfsz/hgrnmh 
+create element:  183216 fvqbtm.tch 
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/rmn/rsnqlfsz/nsfhtthc 
+create element:  284747 jspmbh.rvh 
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj 
+create element:  144391 dzf 
+create level:  lrths 
+create element:  178083 nhlmsd.mnc 
+create level:  rwn 
+create element:  173833 shlhgj.qss 
+create element:  39183 tnflwcsn 
+create element:  125029 zfn.hjr 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/lrths 
+create level:  hgrnmh 
+create level:  pfc 
+create element:  86563 rzsrp.gbc 
+create element:  280631 tmhnc.hmc 
+create element:  28181 ttsnjc.rhm 
+create element:  98060 vdmr.czg 
+create level:  vlshvmvj 
+create level:  wsn 
+create element:  210337 zfn.pqp 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/lrths/hgrnmh 
+create level:  mvrlcvj 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/lrths/hgrnmh/mvrlcvj 
+create element:  121034 vssbr.qjm 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/lrths/pfc 
+create level:  gqlg 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/lrths/pfc/gqlg 
+create element:  305519 hdhn.wds 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/lrths/vlshvmvj 
+create element:  56641 lflcgss.jrm 
+create element:  29190 rzsrp.vsh 
+create element:  36663 zcmfcjhf.tzw 
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/lrths/wsn 
+create element:  137307 gmdfbfjf.crs 
+create level:  hgtqj 
+create element:  297924 lflcgss.jrm 
+create level:  shlhgj 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/lrths/wsn/hgtqj 
+create element:  214202 qnlszftb.bzg 
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/lrths/wsn/shlhgj 
+create level:  pmldlbbh 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/lrths/wsn/shlhgj/pmldlbbh 
+create element:  263722 zwfptl.wsh 
+go up
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/shlhgj/rwn 
+create element:  279589 ttqg.qct 
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/tmzcmb 
+create element:  138557 jjhc.tzr 
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/vlbqvps 
+create level:  nmfnf 
+create element:  123659 rzsrp 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/vlbqvps/nmfnf 
+create level:  jhpnd 
+create element:  50537 trzvzvgz.bqp 
+create element:  41828 vps 
+create element:  195245 wlwt.ftj 
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/vlbqvps/nmfnf/jhpnd 
+create element:  257519 shlhgj.fwz 
+create element:  32963 wzmbdtz 
+go up
+go up
+go up
+go down to start/zjhqnlrr/ddzmvh/pvdwhmcr/wmmfp 
+create element:  94749 lflcgss.jrm 
+go up
+go up
+go up
+go down to start/zjhqnlrr/dsjd 
+create element:  284923 bjvwg.phz 
+create level:  bwjp 
+create level:  gqlg 
+create level:  hgrnmh 
+create element:  8771 jjhc.tzr 
+create level:  jntt 
+create element:  271995 qbtn.vps 
+create element:  299501 shlhgj.crl 
+create level:  vmph 
+create level:  zvg 
+go down to start/zjhqnlrr/dsjd/bwjp 
+create element:  117739 vtrg 
+go up
+go down to start/zjhqnlrr/dsjd/gqlg 
+create level:  dwhr 
+create element:  159876 hgrnmh.jvw 
+create level:  rzsrp 
+go down to start/zjhqnlrr/dsjd/gqlg/dwhr 
+create element:  193289 gqlg 
+create element:  171323 lflcgss.jrm 
+go up
+go down to start/zjhqnlrr/dsjd/gqlg/rzsrp 
+create level:  pmsgd 
+go down to start/zjhqnlrr/dsjd/gqlg/rzsrp/pmsgd 
+create element:  12648 lflcgss.jrm 
+create level:  wbppspwq 
+go down to start/zjhqnlrr/dsjd/gqlg/rzsrp/pmsgd/wbppspwq 
+create element:  38834 tnflwcsn 
+go up
+go up
+go up
+go up
+go down to start/zjhqnlrr/dsjd/hgrnmh 
+create element:  76649 cfdcbvdl.gfs 
+create element:  257249 gmmzf 
+create element:  83045 lhrtfcz 
+go up
+go down to start/zjhqnlrr/dsjd/jntt 
+create element:  286866 lhqvt.lst 
+go up
+go down to start/zjhqnlrr/dsjd/vmph 
+create level:  fnvpsr 
+create level:  gfnvsznj 
+create element:  19765 zcmfcjhf.tzw 
+create element:  204319 zzsnj.dcp 
+go down to start/zjhqnlrr/dsjd/vmph/fnvpsr 
+create level:  flz 
+create element:  173924 fvqbtm.tch 
+create element:  248297 mjrhs.scq 
+create level:  rzsrp 
+create element:  130580 zfn 
+go down to start/zjhqnlrr/dsjd/vmph/fnvpsr/flz 
+create element:  106168 brsgg 
+go up
+go down to start/zjhqnlrr/dsjd/vmph/fnvpsr/rzsrp 
+create element:  221882 hgrnmh.nsl 
+create level:  smd 
+go down to start/zjhqnlrr/dsjd/vmph/fnvpsr/rzsrp/smd 
+create level:  drsld 
+create element:  131686 fvqbtm.tch 
+create level:  gqlg 
+create element:  288283 hcw 
+go down to start/zjhqnlrr/dsjd/vmph/fnvpsr/rzsrp/smd/drsld 
+create element:  85885 zfn.wdf 
+go up
+go down to start/zjhqnlrr/dsjd/vmph/fnvpsr/rzsrp/smd/gqlg 
+create element:  8466 dzjtj.zbc 
+go up
+go up
+go up
+go up
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj 
+create level:  fqb 
+create element:  265075 gqlg 
+create level:  hdhmbtj 
+create element:  74385 hpz 
+create level:  lzdq 
+create level:  rlvqmwv 
+create level:  rzsrp 
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/fqb 
+create element:  55182 ccjgpg 
+create element:  245930 ppdgwcm.zfb 
+create element:  164364 sgtgqdn.tfp 
+go up
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/hdhmbtj 
+create level:  gqlg 
+create element:  68609 jjhc.tzr 
+create level:  rzsrp 
+create level:  vrmrnt 
+create element:  66988 zcmfcjhf.tzw 
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/hdhmbtj/gqlg 
+create element:  156776 tnflwcsn 
+create level:  vdcbg 
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/hdhmbtj/gqlg/vdcbg 
+create element:  261780 lflcgss.jrm 
+go up
+go up
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/hdhmbtj/rzsrp 
+create element:  27818 zfn 
+go up
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/hdhmbtj/vrmrnt 
+create element:  273664 msmzfnj.llc 
+create element:  145156 svzmwnrq.chh 
+go up
+go up
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/lzdq 
+create element:  214363 fms 
+create element:  190021 lfzcgh.dsq 
+create element:  21357 qtvvmj.zqw 
+go up
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/rlvqmwv 
+create level:  gqlg 
+create element:  198296 gqlg.sdz 
+create element:  842 gshcswc.dcb 
+create level:  shlhgj 
+create element:  199828 snng 
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/rlvqmwv/gqlg 
+create element:  183087 zfn.nsj 
+go up
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/rlvqmwv/shlhgj 
+create element:  73040 tzgjrqmb 
+go up
+go up
+go down to start/zjhqnlrr/dsjd/vmph/gfnvsznj/rzsrp 
+create element:  229576 vtftgng.wfz 
+go up
+go up
+go up
+go down to start/zjhqnlrr/dsjd/zvg 
+create element:  85701 shlhgj.dvf 
+go up
+go up
+go down to start/zjhqnlrr/nnzvl 
+create level:  wwzsf 
+go down to start/zjhqnlrr/nnzvl/wwzsf 
+create element:  105177 tvbdz 
+go up
+go up
+go up
+go down to start/zssdlnc 
+create level:  nfgh 
+create element:  166004 twdcrh.zld 
+create level:  zfn 
+go down to start/zssdlnc/nfgh 
+create element:  102281 fvqbtm.tch 
+go up
+go down to start/zssdlnc/zfn 
+create level:  fbmww 
+create level:  jsst 
+create element:  206602 shlhgj.cln 
+go down to start/zssdlnc/zfn/fbmww 
+create element:  179734 fll 
+go up
+go down to start/zssdlnc/zfn/jsst 
+create level:  flp 
+go down to start/zssdlnc/zfn/jsst/flp 
+create element:  32274 gctgt.stn 
+create element:  67650 ggvj.bwz </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>all_sizes <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(all_dirs, <span class="cf">function</span>(cur_dir){</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_sum_size_dir</span>(cur_dir<span class="sc">$</span>name)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>all_dirs_less_max_size <span class="ot">&lt;-</span> <span class="fu">names</span>(all_sizes)[all_sizes <span class="sc">&lt;</span> max_dir_size]</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>all_dirs_less_max_size</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "start/plmdrbn/fmzjhrq"                                                           
+ [2] "start/plmdrbn/fmzjhrq/rrjjsvm"                                                   
+ [3] "start/stqq/whmdbn"                                                               
+ [4] "start/zjhqnlrr/bzzvj/wjtlg"                                                      
+ [5] "start/zjhqnlrr/bzzvj/zfn"                                                        
+ [6] "start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/pbzhfsg"                                   
+ [7] "start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/gqlg/gqlg"                           
+ [8] "start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/gqlg/nvjqp/gcq/mslhm"                
+ [9] "start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/dthcrbmr/lhp"      
+[10] "start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/dthcrbmr/npf"      
+[11] "start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/dthcrbmr/qbgrjr"   
+[12] "start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/shlhgj/wtlngn"     
+[13] "start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/rzsrp/mbsjjzft/stgszvmj/shlhgj/wtlngn/gqlg"
+[14] "start/zjhqnlrr/ddzmvh/mghmb/btjq/rqtc/shlhgj/tns/qhhtgsvz"                       
+[15] "start/zjhqnlrr/ddzmvh/pvdwhmcr/wmmfp"                                            
+[16] "start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/fwtwqvn/rqndc"                           
+[17] "start/zjhqnlrr/ddzmvh/pvdwhmcr/ltvtrtth/fwtwqvn/rzsrp"                           
+[18] "start/zjhqnlrr/ddzmvh/pvdwhmcr/prtqcb/dtr/grwpbs"                                
+[19] "start/zjhqnlrr/ddzmvh/pvdwhmcr/rmn/gtnvc"                                        
+[20] "start/zjhqnlrr/dsjd/zvg"                                                         
+[21] "start/zjhqnlrr/dsjd/gqlg/rzsrp"                                                  
+[22] "start/zjhqnlrr/dsjd/gqlg/rzsrp/pmsgd"                                            
+[23] "start/zjhqnlrr/dsjd/gqlg/rzsrp/pmsgd/wbppspwq"                                   
+[24] "start/zjhqnlrr/dsjd/vmph/fnvpsr/rzsrp/smd/drsld"                                 
+[25] "start/zjhqnlrr/dsjd/vmph/fnvpsr/rzsrp/smd/gqlg"                                  
+[26] "start/zjhqnlrr/dsjd/vmph/gfnvsznj/hdhmbtj/rzsrp"                                 
+[27] "start/zjhqnlrr/dsjd/vmph/gfnvsznj/rlvqmwv/shlhgj"                                
+[28] "start/zssdlnc/zfn/jsst"                                                          
+[29] "start/zssdlnc/zfn/jsst/flp"                                                      </code></pre>
+</div>
+</div>
+<div class="card border-success mb-3">
+<div class="card-text">
+<p>In the full input the suz size of the directories that have size of <em>at most</em> 10^{5} is 1.749646^{6}! 🥳</p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
