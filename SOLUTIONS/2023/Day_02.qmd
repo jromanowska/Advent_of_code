@@ -19,7 +19,7 @@ Each draw contains number of cubes that were selected in each color: `red`,
 `green`, or `blue`.
 
 ```{julia}
-input_file = open("DATA/2023/input_day02.txt", "r");
+input_file = open("../../DATA/2023/input_day02.txt", "r");
 #input_file = open("DATA/2023/example_input_day02.txt", "r");
 peek(input_file, String)
 ```
