@@ -1,0 +1,135 @@
+---
+title: "Day 2"
+author: "Julia Romanowska"
+jupyter: julia-1.9
+---
+
+```{julia}
+#| label: setup
+#| include: false
+using DataFrames;
+using Markdown;
+```
+
+## The input
+
+Each line is a different game. Each game contains draws separated by semicolon.
+Each draw contains number of balls that were selected in each color: `red`,
+`green`, or `blue`.
+
+```{julia}
+input_file = open("../../DATA/2023/input_day02.txt", "r");
+peek(input_file, String)
+```
+
+## Part 1
+
+### The problem
+
+> _Determine which games would have been possible if the bag had been loaded_
+> _with only 12 red cubes, 13 green cubes, and 14 blue cubes._
+
+First, let's create a dataset with all draws.
+
+```{julia}
+all_games = DataFrame(
+    game_no = 0,
+    colors = "",
+    draws = 0
+);
+```
+
+We will also need a function to find these different numbers and colors.
+
+```{julia}
+function find_colors_numbers(draws::String, color::String)
+    out_num_balls = Int32[];
+    idx = 1;
+    while idx < lastindex(draws)
+        m = match(
+            Regex(" (?<num_balls>\\d+) $color"),
+            draws,
+            idx
+        );
+        if isnothing(m)
+            break
+        end
+        push!(out_num_balls, parse(Int32, m["num_balls"]));
+        idx = m.offset + length(m.match);
+    end
+    return out_num_balls
+end
+```
+
+```{julia}
+all_colors = ["red", "green", "blue"];
+
+line = readline(input_file);
+while line != ""
+    split_first = split(line, ":");
+    game_no = split(
+        first(split_first), " "
+    ) |>
+    x -> parse(Int32, last(x));
+    draws = map(
+        find_colors_numbers,
+        [line, line, line],
+        all_colors
+    );
+    cur_games = DataFrame(
+        game_no = game_no,
+        colors = all_colors,
+        draws = draws
+    ) |>
+        x -> flatten(x, :draws);
+    append!(all_games, cur_games);
+
+    # read the next line:
+    global line = readline(input_file);
+end
+
+close(input_file)
+```
+
+### The solution
+
+Let's check which draws gave more than _12 red cubes, 13 green cubes, and 14_
+_blue cubes_.
+
+```{julia}
+all_no_draws = [12, 13, 14];
+
+function get_games_not_possible(color, no_draws)
+    cur_subset = subset(
+        all_games,
+        :colors => col -> col .== color,
+        :draws => dr -> dr .> no_draws
+    );
+    return unique(cur_subset.game_no)
+end
+```
+
+```{julia}
+all_games_ids_not_possible = map(
+        get_games_not_possible,
+        all_colors,
+        all_no_draws
+    ) |>
+        x -> unique(vcat(x...));
+all_games_ids_possible = setdiff(unique(all_games.game_no), all_games_ids_not_possible);
+```
+
+
+```{julia}
+#| echo: false
+sum_all_num = sum(all_games_ids_possible);
+Markdown.parse("""
+The sum of these numbers is $sum_all_num.
+""")
+```
+
+## Part 2
+
+### The problem
+
+### The solution
