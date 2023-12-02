@@ -8,17 +8,19 @@ jupyter: julia-1.9
 #| label: setup
 #| include: false
 using DataFrames;
+using DataFramesMeta;
 using Markdown;
 ```
 
 ## The input
 
 Each line is a different game. Each game contains draws separated by semicolon.
-Each draw contains number of balls that were selected in each color: `red`,
+Each draw contains number of cubes that were selected in each color: `red`,
 `green`, or `blue`.
 
 ```{julia}
-input_file = open("../../DATA/2023/input_day02.txt", "r");
+input_file = open("DATA/2023/input_day02.txt", "r");
+#input_file = open("DATA/2023/example_input_day02.txt", "r");
 peek(input_file, String)
 ```
 
@@ -43,21 +45,21 @@ We will also need a function to find these different numbers and colors.
 
 ```{julia}
 function find_colors_numbers(draws::String, color::String)
-    out_num_balls = Int32[];
+    out_num_cubes = Int32[];
     idx = 1;
     while idx < lastindex(draws)
         m = match(
-            Regex(" (?<num_balls>\\d+) $color"),
+            Regex(" (?<num_cubes>\\d+) $color"),
             draws,
             idx
         );
         if isnothing(m)
             break
         end
-        push!(out_num_balls, parse(Int32, m["num_balls"]));
+        push!(out_num_cubes, parse(Int32, m["num_cubes"]));
         idx = m.offset + length(m.match);
     end
-    return out_num_balls
+    return out_num_cubes
 end
 ```
 
@@ -132,4 +134,33 @@ The sum of these numbers is $sum_all_num.
 
 ### The problem
 
+> _What is the minimum number of cubes that makes each game possible?_
+
+This means, that I need to find the minimum number in each game, for each color.
+
+```{julia}
+min_cubes_all_games = combine(
+    groupby(all_games, [:game_no, :colors]),
+    :draws => (x -> max(x...)) => :max_draw
+)
+```
+
 ### The solution
+
+Then, for each game, multiply the minimal numbers and sum up.
+
+```{julia}
+powers_per_game = combine(
+    groupby(min_cubes_all_games, :game_no),
+    :max_draw => (x -> reduce(*, x)) => :power
+)
+```
+
+
+```{julia}
+#| echo: false
+Markdown.parse("""
+The sum of these numbers is $(sum(powers_per_game.power)).
+""")
+```
+
