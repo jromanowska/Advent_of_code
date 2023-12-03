@@ -20,7 +20,7 @@ it is adjacent to any symbol other than `.` (even diagonally).
 
 ```{julia}
 #input_file = open("../../DATA/2023/input_day03.txt", "r");
-input_file = open("DATA/2023/example_input_day03.txt", "r");
+input_file = open("../../DATA/2023/example_input_day03.txt", "r");
 println(peek(input_file, String))
 ```
 
