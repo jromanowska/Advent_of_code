@@ -45,8 +45,7 @@ all_numbers_positions = DataFrame(
 all_symbols_positions = DataFrame(
     cur_symbol = 0,
     line_no = 0,
-    column_start = 0,
-    column_end = 0
+    column_pos = 0
 );
 ```
 
@@ -73,13 +72,54 @@ end
 ```
 
 ```{julia}
+#| error: true
 line = readline(input_file);
+cur_line_no = 1;
 while line != ""
+    # find digits...
     cur_line_numbers_found = match_all(r"\d", line);
+    # and make them into numbers
+    #   find difference in position from the previous digit:
+    diff_numbers_positions = [2; diff(cur_line_numbers_found.cur_position)];
+    # the next will be simpler if I create groups based on the position
+    cur_group = 0;
+    groups = Int32[];
+    for idx in diff_numbers_positions
+        if idx != 1
+            global cur_group += 1;
+        end
+        push!(groups, cur_group);
+    end
+    cur_line_numbers_found[:, :group_no] = groups;
+    #   find beginning and end of each number:
+    cur_numbers_out = combine(
+        groupby(cur_line_numbers_found, :group_no),
+        [:cur_number, :cur_position] =>
+         ((n, p) -> (cur_number = parse(Int32, string(n...)),
+                    column_start = min(p...),
+                    column_end = max(p...))) =>
+         AsTable
+    );
+    cur_numbers_out[:, :line_no] = fill(cur_line_no, nrow(cur_numbers_out));
+    select!(cur_numbers_out, Not(:group_no));
+    #  finally, add to the big table
+    append!(all_numbers_positions, cur_numbers_out);
+
+    # find symbols...
     cur_line_symbols_found = match_all(r"[^\d.]", line);
+    # and place in the DataFrame
+    append!(
+        all_symbols_positions,
+        DataFrame(
+            cur_symbol = cur_line_symbols_found.cur_number,
+            line_no = fill(cur_line_no, nrow(cur_line_symbols_found)),
+            column_pos = cur_line_symbols_found.cur_position
+        )
+    )
 
     # read the next line:
     global line = readline(input_file);
+    global cur_line_no =+ 1;
 end
 
 close(input_file)
