@@ -1,0 +1,86 @@
+---
+title: "Day 3"
+author: "Julia Romanowska"
+jupyter: julia-1.9
+---
+
+```{julia}
+#| label: setup
+#| include: false
+using DataFrames;
+using DataFramesMeta;
+using Markdown;
+```
+
+## The input
+
+Each line consists of symbols and digits. Digits form numbers, delimited by
+either `.` (full stop) or another symbol. A number is part of the engine if
+it is adjacent to any symbol other than `.` (even diagonally).
+
+```{julia}
+#input_file = open("../../DATA/2023/input_day03.txt", "r");
+input_file = open("DATA/2023/example_input_day03.txt", "r");
+println(peek(input_file, String))
+```
+
+## Part 1
+
+What I need to do is:
+
+1. find all the numbers and their positions (line number and column number)
+2. find all the symbols that are not `.` and their positions
+3. check positions of numbers against positions of symbols (a la rolling join)
+
+### Find all the numbers and symbols, and their positions
+
+```{julia}
+all_numbers_positions = DataFrame(
+    cur_number = 0,
+    line_no = 0,
+    column_start = 0,
+    column_end = 0
+);
+
+all_symbols_positions = DataFrame(
+    cur_symbol = 0,
+    line_no = 0,
+    column_start = 0,
+    column_end = 0
+);
+```
+
+```{julia}
+#| label: match_function
+function match_all(pattern::Regex, where_to_match::String)
+    all_positions = Int32[];
+    all_matches = String[];
+    idx = 1;
+    while idx < lastindex(where_to_match)
+        m = match(pattern, where_to_match, idx);
+        if isnothing(m)
+            break
+        end
+        push!(all_positions, m.offset);
+        push!(all_matches, m.match);
+        idx = m.offset + 1;
+    end
+    return DataFrame(
+        cur_number = all_matches,
+        cur_position = all_positions
+    )
+end
+```
+
+```{julia}
+line = readline(input_file);
+while line != ""
+    cur_line_numbers_found = match_all(r"\d", line);
+    cur_line_symbols_found = match_all(r"[^\d.]", line);
+
+    # read the next line:
+    global line = readline(input_file);
+end
+
+close(input_file)
+```
