@@ -1,0 +1,64 @@
+---
+title: "Day 4"
+author: "Julia Romanowska"
+jupyter: julia-1.9
+---
+
+```{julia}
+#| label: setup
+#| include: false
+using DataFrames;
+using DataFramesMeta;
+using CSV;
+using Markdown;
+```
+
+## The input
+
+Each line consists of symbols and digits. Digits form numbers, delimited by
+either `.` (full stop) or another symbol. A number is part of the engine if
+it is adjacent to any symbol other than `.` (even diagonally).
+
+```{julia}
+root = dirname(@__FILE__);
+input_file = joinpath(root, "..", "..", "DATA", "2023", "input_day04.txt");
+input_data = CSV.read(input_file, DataFrame; header = false, delim = "|")
+```
+
+## Part 1
+
+How many of the numbers in column1 are in column2?
+
+```{julia}
+#| label: help_function
+function create_numvec(in_string::String, sep::Char)
+    return (split(in_string, sep; keepempty = false) |>
+        x -> parse.(Int, x))
+end
+```
+
+```{julia}
+all_points = Int32[];
+for row_no in 1:nrow(input_data)
+    input_nums = last(split(input_data[row_no, :Column1], ":"));
+    input_nums = create_numvec(String(input_nums), ' ');
+
+    winning_nums = create_numvec(String(input_data[row_no, :Column2]), ' ');
+
+    how_many_win = length(intersect(input_nums, winning_nums));
+    how_many_points = how_many_win == 0 ? 0 : 2^(how_many_win - 1);
+    push!(all_points, how_many_points);
+end
+all_points
+```
+
+### The solution
+
+```{julia}
+#| echo: false
+Markdown.parse("""
+The sum of these numbers is $(sum(all_points)).
+""")
+```
+
+
