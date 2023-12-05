@@ -1,0 +1,133 @@
+---
+title: "Day 5"
+author: "Julia Romanowska"
+jupyter: julia-1.9
+---
+
+```{julia}
+#| label: setup
+#| include: false
+using DataFrames;
+using DataFramesMeta;
+using CSV;
+using Markdown;
+```
+
+## The input
+
+There are several maps hidden in the file. All this mapping helps find out how
+to plant the new seeds.
+
+```{julia}
+root = dirname(@__FILE__);
+input_file = joinpath(root, "..", "..", "DATA", "2023", "input_day05.txt");
+input_data = open(input_file, "r");
+for i in 1:5
+    println(readline(input_data))
+end
+close(input_data)
+```
+
+## Part 1
+
+First, we need to extract the different mappings from this one file.
+
+Let's get all the seed numbers (our input):
+
+```{julia}
+#| label: which_seeds
+input_data = open(input_file, "r");
+
+seeds = readline(input_data) |>
+    x -> (split(x, " "))[2:end] |>
+    x -> parse.(Int64, x)
+```
+
+...and then all the maps in one String:
+
+```{julia}
+all_maps = read(input_data, String);
+close(input_data)
+```
+
+...so that we can split:
+
+```{julia}
+split_maps = split(all_maps, "\n\n")
+
+all_maps_names = String[];
+all_maps_data = DataFrame[];
+for each_map in split_maps
+    map_name , map_data = split(each_map, ":\n");
+    # get the name without explicit " map"
+    map_name = (strip(map_name))[1:(end - 4)];
+    push!(all_maps_names, map_name);
+
+    map_data = CSV.read(
+        IOBuffer(map_data),
+        DataFrame;
+        header = ["dest_start", "src_start", "range"],
+        delim = " "
+    );
+    sort!(map_data, :src_start);
+    map_data = transform(
+        map_data,
+        [:dest_start, :range] =>
+            ((d, r) -> d + r) =>
+        :dest_end,
+        [:src_start, :range] =>
+            ((s, r) -> s + r) =>
+        :src_end
+    );
+    push!(all_maps_data, map_data);
+end
+```
+
+
+```{julia}
+#| echo: false
+Markdown.parse("""
+Now I have all these maps: $(all_maps_names).
+""")
+```
+
+### The problem
+
+I need to find which seed goes with which soil, which soil goes with which
+fertilizer, etc. And then, find the smallest location number!
+
+```{julia}
+function get_dest_number(src_number::Int64, map_number::Int64)
+    cur_map = all_maps_data[map_number];
+    filtered_map = subset(cur_map, [:src_start, :src_end] => (x,y) -> x .<= src_number .<= y);
+    if nrow(filtered_map) == 0
+        # the destination number is the same as src number
+        return src_number
+    end
+    offset = src_number - filtered_map.src_start[1];
+    return filtered_map.dest_start[1] + offset
+end
+```
+
+```{julia}
+all_locations = Int64[];
+for s_number in seeds
+    start_number = s_number;
+    next_number = Int64;
+    for m_number in 1:length(all_maps_names)
+        next_number = get_dest_number(start_number, m_number);
+        start_number = next_number;
+    end
+    push!(all_locations, next_number);
+end
+```
+
+### The solution
+
+
+```{julia}
+#| echo: false
+Markdown.parse("""
+The smallest location is: $(min(all_locations...)).
+""")
+```
