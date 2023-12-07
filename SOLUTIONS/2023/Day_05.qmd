@@ -110,6 +110,7 @@ end
 ```
 
 ```{julia}
+#| label: get_all_locations
 all_locations = Int64[];
 for s_number in seeds
     start_number = s_number;
@@ -131,3 +132,27 @@ Markdown.parse("""
 The smallest location is: $(min(all_locations...)).
 """)
 ```
+
+## Part 2
+
+Range of seeds instead of list of seeds.
+
+```{julia}
+#| eval: false
+all_locations = Int64[];
+for i in 1:2:(lastindex(seeds) - 1)
+    seed_start = seeds[i];
+    seed_range = seeds[i + 1];
+    for s_number in seed_start:(seed_start + seed_range)
+        start_number = s_number;
+        next_number = Int64;
+        for m_number in 1:length(all_maps_names)
+            next_number = get_dest_number(start_number, m_number);
+            start_number = next_number;
+        end
+        push!(all_locations, next_number);
+    end
+end
+```
+
+This solution takes too much time to run!

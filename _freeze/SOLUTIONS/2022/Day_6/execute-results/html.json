@@ -1,0 +1,14 @@
+{
+  "hash": "a25592d7f4ad21274bc9d9999ad7b898",
+  "result": {
+    "markdown": "---\ntitle: \"Day 6\"\nauthor: \"Julia Romanowska\"\n---\n\n\n\n\n## Data\n\nThis is the stream of characters that needs to be proceed in sequential\nmanner to find the _start-of-packet marker_. This is indicated by a sequence\nwhere all four characters are different.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n(\n  stream_input <- scan(\n    here(\"DATA\", \"2022\", \"input_day_06.txt\"),\n    what = \"character\"\n    ) %>%\n    strsplit(split = \"\", fixed = TRUE) %>%\n    unlist()\n) %>% head(10)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n [1] \"c\" \"v\" \"t\" \"v\" \"b\" \"v\" \"f\" \"b\" \"v\" \"f\"\n```\n:::\n:::\n\n\n# Part one\n\n## Functions\n\nI will need to check at each item:\n\n- whether there are enough characters to create a _marker_ (i.e., min.4) and\n- whether all last 4 are different\n\n\n::: {.cell}\n\n```{.r .cell-code}\npop_first <- function(cur_read){\n  return(cur_read[-1])\n}\n\npush_last <- function(cur_read, new_char){\n  return(c(cur_read, new_char))\n}\n\nupdate_cur_read <- function(cur_read, new_char){\n  new_read <- pop_first(cur_read)\n  new_read <- push_last(new_read, new_char)\n  return(new_read)\n}\n\ncheck_uniqueness <- function(cur_read){\n  n_unique <- length(unique(cur_read))\n  return(n_unique == length(cur_read))\n}\n```\n:::\n\n\n## Process input\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncur_position <- 4\ncur_read <- stream_input[1:cur_position]\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nwhile (!check_uniqueness(cur_read) | cur_position == length(stream_input)) {\n  cur_position <- cur_position + 1\n  new_char <- stream_input[cur_position]\n  \n  cur_read <<- update_cur_read(cur_read, new_char)\n}\n```\n:::\n\n\n::: {.card .border-success .mb-3}\n::: {.card-text}\nThe number of characters to be processed before the first start-of-packet\nmarker is detected is 1093! 🥳\n:::\n:::\n\n\n# Part two\n\n## Detect _start-of-the-message marker_\n\nThe _start-of-the-message marker_ consists of **14 distinct characters**!\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncur_position <- 14\ncur_read <- stream_input[1:cur_position]\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nwhile (!check_uniqueness(cur_read) | cur_position == length(stream_input)) {\n  cur_position <- cur_position + 1\n  new_char <- stream_input[cur_position]\n  \n  cur_read <<- update_cur_read(cur_read, new_char)\n}\n```\n:::\n\n\n::: {.card .border-success .mb-3}\n::: {.card-text}\nThe number of characters to be processed before the first start-of-message\nmarker is detected is 3534! 🥳\n:::\n:::\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

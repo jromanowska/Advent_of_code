@@ -91,10 +91,11 @@ for t in 1:(one_time - 1)
 end
 ```
 
+### The solution
 
 ```{julia}
 #| echo: false
 Markdown.parse("""
-The total number of ways to win all the races: $(cur_winning_approaches).
+The total number of ways to win the long race: $(cur_winning_approaches).
 """)
 ```

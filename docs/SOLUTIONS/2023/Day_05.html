@@ -154,6 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The problem</a></li>
   <li><a href="#the-solution" id="toc-the-solution" class="nav-link" data-scroll-target="#the-solution">The solution</a></li>
   </ul></li>
+  <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a></li>
   </ul>
 </nav>
     </div>
@@ -296,7 +297,7 @@ seed-to-soil map:
 <pre><code>get_dest_number (generic function with 1 method)</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="8">
+<div id="get_all_locations" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>all_locations <span class="op">=</span> <span class="dt">Int64</span>[];</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s_number <span class="kw">in</span> seeds</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    start_number <span class="op">=</span> s_number;</span>
@@ -316,9 +317,30 @@ seed-to-soil map:
 <p>The smallest location is: 51580674.</p>
 </div>
 </div>
-
-
 </section>
+</section>
+<section id="part-2" class="level2">
+<h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
+<p>Range of seeds instead of list of seeds.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>all_locations <span class="op">=</span> <span class="dt">Int64</span>[];</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">:</span>(<span class="fu">lastindex</span>(seeds) <span class="op">-</span> <span class="fl">1</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    seed_start <span class="op">=</span> seeds[i];</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    seed_range <span class="op">=</span> seeds[i <span class="op">+</span> <span class="fl">1</span>];</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s_number <span class="kw">in</span> seed_start<span class="op">:</span>(seed_start <span class="op">+</span> seed_range)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        start_number <span class="op">=</span> s_number;</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        next_number <span class="op">=</span> <span class="dt">Int64</span>;</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> m_number <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(all_maps_names)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>            next_number <span class="op">=</span> <span class="fu">get_dest_number</span>(start_number, m_number);</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>            start_number <span class="op">=</span> next_number;</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">push!</span>(all_locations, next_number);</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This solution takes too much time to run!</p>
+
+
 </section>
 
 </main> <!-- /main -->

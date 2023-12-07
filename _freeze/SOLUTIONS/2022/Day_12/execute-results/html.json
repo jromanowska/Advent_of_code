@@ -1,0 +1,16 @@
+{
+  "hash": "6863dbdea2aca12c6b0fded30081d9a8",
+  "result": {
+    "markdown": "---\ntitle: \"Day 12\"\nauthor: \"Julia Romanowska\"\n---\n\n\n\n\n## Data\n\nUp, up, up, we are gonna climb!\n\nThe letters represent the levels, from `a` (lowest) to `z` (highest). We need\nto get from `S` to `E` (which is on level `z`), but walking only one level up \n(or down) at a time.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlevels_map <- map(\n  readLines(\n    here(\"DATA\", \"2022\", \"input_day_12.txt\")\n  ),\n  function(line){\n    str_split(line, pattern = \"\") %>% unlist()\n  }\n) %>% do.call(rbind, .)\ndim(levels_map)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1]  41 162\n```\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nlevels_map %>%\n  as_tibble(rownames = \"row\") %>%\n  pivot_longer(cols = V1:V162, names_to = \"col\", values_to = \"val\") %>%\n  mutate(\n    col = as.numeric(str_sub(col, start = 2, end = -1)),\n    row = as.numeric(row),\n    val = factor(val, levels = c(letters, \"E\", \"S\"))\n  ) %>%\n  ggplot(aes(col, row)) +\n  geom_tile(aes(fill = val)) +\n  coord_fixed() +\n  scale_fill_manual(\n    values = c(grey((1:length(letters))/length(letters)), \"#0000FF\", \"#FF0000\"),\n    name = \"\"\n  ) +\n  theme_minimal() +\n  theme(\n    legend.position = \"bottom\",\n    legend.direction = \"horizontal\"\n  )\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning: The `x` argument of `as_tibble.matrix()` must have unique column names if\n`.name_repair` is omitted as of tibble 2.0.0.\nℹ Using compatibility `.name_repair`.\n```\n:::\n\n::: {.cell-output-display}\n![](Day_12_files/figure-html/plot-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "Day_12_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

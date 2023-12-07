@@ -154,6 +154,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The problem</a></li>
   <li><a href="#the-solution" id="toc-the-solution" class="nav-link" data-scroll-target="#the-solution">The solution</a></li>
   </ul></li>
+  <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a>
+  <ul class="collapse">
+  <li><a href="#the-solution-1" id="toc-the-solution-1" class="nav-link" data-scroll-target="#the-solution-1">The solution</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -200,11 +204,11 @@ Distance:   434   1041   2219   1218
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>time_line , dist_line <span class="op">=</span> <span class="fu">split</span>(input_data, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)[<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>times <span class="op">=</span> <span class="fu">split</span>(time_line, <span class="st">r"</span><span class="sc">\s+</span><span class="st">"</span>)[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>] <span class="op">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">-&gt;</span> <span class="fu">parse</span>.(<span class="dt">Int32</span>, x)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">-&gt;</span> <span class="fu">parse</span>.(<span class="dt">Int64</span>, x)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>distances <span class="op">=</span> <span class="fu">split</span>(dist_line, <span class="st">r"</span><span class="sc">\s+</span><span class="st">"</span>)[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>] <span class="op">|&gt;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">-&gt;</span> <span class="fu">parse</span>.(<span class="dt">Int32</span>, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">-&gt;</span> <span class="fu">parse</span>.(<span class="dt">Int64</span>, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div id="get_data" class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>4-element Vector{Int32}:
+<pre><code>4-element Vector{Int64}:
   434
  1041
  2219
@@ -218,7 +222,7 @@ Distance:   434   1041   2219   1218
 <h3 class="anchored" data-anchor-id="the-problem">The problem</h3>
 <p>For each race, we can hold the button to charge the boat for varying number of miliseconds but not exceed the maximum time given in the input file. With each milisecond of holding the button, the boat gains 1ms/mm velocity.</p>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">find_max_dist</span>(time_hold_button<span class="op">::</span><span class="dt">Int64</span>, max_time<span class="op">::</span><span class="dt">Int32</span>)</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">find_max_dist</span>(time_hold_button<span class="op">::</span><span class="dt">Int64</span>, max_time<span class="op">::</span><span class="dt">Int64</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (max_time <span class="op">-</span> time_hold_button)<span class="op">*</span>time_hold_button</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div id="function_max_dist" class="cell-output cell-output-display" data-execution_count="5">
@@ -230,7 +234,7 @@ Distance:   434   1041   2219   1218
 <h3 class="anchored" data-anchor-id="the-solution">The solution</h3>
 <p>We need to find the number of ways we can get larger distance than what is in the input file.</p>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>all_winning_approaches <span class="op">=</span> <span class="dt">Int32</span>[];</span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>all_winning_approaches <span class="op">=</span> <span class="dt">Int64</span>[];</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">lastindex</span>(times)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    cur_max_time <span class="op">=</span> times[idx];</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    cur_max_dist <span class="op">=</span> distances[idx];</span>
@@ -247,6 +251,30 @@ Distance:   434   1041   2219   1218
 <div class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <p>The total number of ways to win all the races: 1159152.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="part-2" class="level2">
+<h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
+<p>Instead of the input showing many races, it’s actually one!</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>one_time <span class="op">=</span> <span class="fu">parse</span>(<span class="dt">Int64</span>, <span class="fu">string</span>(times<span class="op">...</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>one_distance <span class="op">=</span> <span class="fu">parse</span>(<span class="dt">Int64</span>, <span class="fu">string</span>(distances<span class="op">...</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>cur_winning_approaches <span class="op">=</span> <span class="fl">0</span>;</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>(one_time <span class="op">-</span> <span class="fl">1</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    max_dist <span class="op">=</span> <span class="fu">find_max_dist</span>(t, one_time)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> max_dist <span class="op">&gt;</span> one_distance</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        cur_winning_approaches <span class="op">+=</span> <span class="fl">1</span>;</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="the-solution-1" class="level3">
+<h3 class="anchored" data-anchor-id="the-solution-1">The solution</h3>
+<div class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="9">
+<p>The total number of ways to win the long race: 41513103.</p>
 </div>
 </div>
 

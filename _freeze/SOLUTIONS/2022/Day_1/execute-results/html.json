@@ -1,0 +1,14 @@
+{
+  "hash": "51bebfaf9ce6b847e1ee4b12c5c99d7e",
+  "result": {
+    "markdown": "---\ntitle: \"Day 1\"\nauthor: \"Julia Romanowska\"\n---\n\n\n\n\n\n## Data\n\nThe list of calories of all items carried by the elves.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndata_in_file <- here(\"DATA\", \"2022\", \"input_day_01.txt\")\n\n(calories_raw <- read_table(\n  data_in_file,\n  col_names = FALSE,\n  skip_empty_rows = FALSE,\n  show_col_types = FALSE\n))\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n# A tibble: 2,240 × 1\n      X1\n   <dbl>\n 1  2991\n 2 13880\n 3 13279\n 4  1514\n 5  9507\n 6    NA\n 7  6544\n 8  9672\n 9 13044\n10  4794\n# ℹ 2,230 more rows\n```\n:::\n:::\n\n\nEach elf inputs the calories their carrying in column, separating their items\nfrom the previous ones by an empty line.\n\n::: {.card .border-secondary .mb-3}\n::: {.card-text}\n_What an idea these elves had! I wonder which programming language they used?!_\n:::\n:::\n\n## Separate elves\n\nEach `NA` means new elf.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncalories_new <- calories_raw %>%\n  rename(calories = X1) %>%\n  mutate(is_na = is.na(calories)) %>%\n  mutate(which_elf = cumsum(is_na) + 1)\ncalories_new\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n# A tibble: 2,240 × 3\n   calories is_na which_elf\n      <dbl> <lgl>     <dbl>\n 1     2991 FALSE         1\n 2    13880 FALSE         1\n 3    13279 FALSE         1\n 4     1514 FALSE         1\n 5     9507 FALSE         1\n 6       NA TRUE          2\n 7     6544 FALSE         2\n 8     9672 FALSE         2\n 9    13044 FALSE         2\n10     4794 FALSE         2\n# ℹ 2,230 more rows\n```\n:::\n:::\n\n\n\n## Count calories\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncalories_new %>%\n  group_by(which_elf) %>%\n  summarise(sum_cal = sum(calories, na.rm = TRUE)) %>%\n  arrange(desc(sum_cal))\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n# A tibble: 245 × 2\n   which_elf sum_cal\n       <dbl>   <dbl>\n 1       213   68467\n 2       234   68143\n 3        89   66810\n 4        34   66631\n 5       209   65461\n 6       199   64966\n 7       145   64176\n 8       140   63815\n 9       110   63338\n10       150   63104\n# ℹ 235 more rows\n```\n:::\n:::\n\n\n🥳 **TADA!**\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

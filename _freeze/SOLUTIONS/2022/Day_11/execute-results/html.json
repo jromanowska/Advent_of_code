@@ -1,0 +1,14 @@
+{
+  "hash": "c110960d26c0e75019bcd74643cfb036",
+  "result": {
+    "markdown": "---\ntitle: \"Day 11\"\nauthor: \"Julia Romanowska\"\n---\n\n\n\n\n## Data\n\nMonkeys 🐒 are having fun with my stuff!!!\n\n## Functions and objects\n\nI will need to create classes, I think.\n\n### 🐒 Monkey\n\n\n::: {.cell}\n\n```{.r .cell-code}\nnew_monkey <- function(id, things, operation, test){\n  structure(id, things, operation, test)\n}\n```\n:::\n\n\n\n### 🎁 Thing\n\nA class with attributes `worry_level` and `monkey` (which monkey holds it).\n\n\n::: {.cell}\n\n```{.r .cell-code}\nnew_thing <- function(id, worry_level, monkey){\n  stopifnot(is.numeric(worry_level))\n  structure(id, worry_level, monkey = monkey, class = \"thing\")\n}\nprint.thing <- function(x, ...){\n  cat(\"This thing (\", id, \") is associated with current worry level of \",\n      x$worry_level, \" and is being hold by a monkey no.\", x$monkey, \"\\n\")\n}\n\nchange_worry_level(thing, operation){\n  old <- thing$worry_level\n  new <- NA\n  eval(parse_expr(operation))\n  thing$worry_level <- new\n  return(thing)\n}\nchange_monkey_holding(thing, old_monkey, new_monkey){\n  remove_thing(old_monkey, thing$id)\n  add_thing(new_monkey, thing$id)\n  thing$monkey <- new_monkey$id\n  return(thing)\n}\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

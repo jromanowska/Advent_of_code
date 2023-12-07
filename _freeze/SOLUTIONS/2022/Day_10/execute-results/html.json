@@ -1,0 +1,14 @@
+{
+  "hash": "a5f966cea6fe0b49e42df28e09364703",
+  "result": {
+    "markdown": "---\ntitle: \"Day 10\"\nauthor: \"Julia Romanowska\"\n---\n\n\n\n\n## Data\n\nInput is a series of CPU instructions.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ninput_file <- here(\"DATA\", \"2022\", \"input_day_10.txt\")\n\ncat(system(paste0(\"head \", input_file), intern = TRUE), sep = \"\\n\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nnoop\nnoop\naddx 5\naddx 29\naddx -28\naddx 5\naddx -1\nnoop\nnoop\naddx 5\n```\n:::\n\n```{.r .cell-code}\nall_instructions <- scan(\n  input_file,\n  what = \"character\",\n  sep = \"\\n\"\n)\n```\n:::\n\n\nThere are two types of instructions:\n\n- `noop` - lasts one cycle and doesn't do anything;\n- `addx V` - lasts two cycles and _after_ two cycles, the X register has \nincreased by `V` (can be also negative)\n\nI will need to follow the cycles and the X register.\n\n## Functions\n\n\n::: {.cell}\n\n```{.r .cell-code}\nincrease_cycle <- function(){\n  cycle <<- cycle + 1\n}\n\ncopy_last_reg <- function(){\n  register[cycle + 1] <<- register[cycle]\n}\n\nadd_to_reg <- function(V){\n  register[cycle + 1] <<- register[cycle] + V\n}\n```\n:::\n\n\n## Run cycles\n\nI need to know of only 220 cycles.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nregister <- rep(NA, 240)\n# register starts with 1\nregister[1] <- 1\nhead(register)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1]  1 NA NA NA NA NA\n```\n:::\n:::\n\n\nI will need to start from cycle 1 instead of 0.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nstart_cycle <- 1\ncycle <- start_cycle\n\nidx <- 1\ncopy_last_reg()\nwhile(idx <= length(all_instructions)){\n  instruction <- all_instructions[idx]\n  \n  if(instruction == \"noop\"){\n    increase_cycle()\n    copy_last_reg()\n  } else {\n    V <- as.numeric(word(instruction, 2))\n    \n    increase_cycle()\n    copy_last_reg()\n    increase_cycle()\n    add_to_reg(V)\n  }\n  idx <<- idx + 1\n}\n```\n:::\n\n\n## Compute total strength\n\nThe signal strength is equal to the multiplication of the X register value and\ncycle number. We focus on cycles: 20, 60, 100, 140, 180, and 220.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nchosen_cycles <- c(20, 60, 100, 140, 180, 220)\nsum_signal_strengths <- sum(chosen_cycles*register[chosen_cycles + 1])\n```\n:::\n\n\n::: {.card .border-success .mb-3}\n::: {.card-text}\nThe sum of chosen signal strengths is 1.492\\times 10^{4}! 🥳\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
