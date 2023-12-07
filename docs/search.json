@@ -448,6 +448,27 @@
     "text": "Part 1\nHow many of the numbers in column1 are in column2?\n\nfunction create_numvec(in_string::String, sep::Char)\n    return (split(in_string, sep; keepempty = false) |&gt;\n        x -&gt; parse.(Int, x))\nend\n\ncreate_numvec (generic function with 1 method)\n\n\n\nall_points = Int32[];\nfor row_no in 1:nrow(input_data)\n    input_nums = last(split(input_data[row_no, :Column1], \":\"));\n    input_nums = create_numvec(String(input_nums), ' ');\n\n    winning_nums = create_numvec(String(input_data[row_no, :Column2]), ' ');\n\n    how_many_win = length(intersect(input_nums, winning_nums));\n    how_many_points = how_many_win == 0 ? 0 : 2^(how_many_win - 1);\n    push!(all_points, how_many_points);\nend\nall_points\n\n218-element Vector{Int32}:\n 128\n 512\n 512\n 512\n 512\n 512\n 512\n 512\n 128\n 128\n   1\n   8\n   0\n   ⋮\n 128\n  64\n  32\n 128\n   4\n   1\n   8\n   1\n   0\n   1\n   0\n   0\n\n\n\nThe solution\n\n\nThe sum of these numbers is 26443."
   },
   {
+    "objectID": "SOLUTIONS/2023/Day_06.html",
+    "href": "SOLUTIONS/2023/Day_06.html",
+    "title": "Day 6",
+    "section": "",
+    "text": "The races’ times and distances:\n\nroot = dirname(@__FILE__);\ninput_file = joinpath(root, \"..\", \"..\", \"DATA\", \"2023\", \"input_day06.txt\");\ninput_data = read(open(input_file, \"r\"), String);\nprintln(input_data)\n\nTime:        58     81     96     76\nDistance:   434   1041   2219   1218\n\n\n\n\ntime_line , dist_line = split(input_data, \"\\n\")[1:2]\ntimes = split(time_line, r\"\\s+\")[2:end] |&gt;\n    x -&gt; parse.(Int32, x)\ndistances = split(dist_line, r\"\\s+\")[2:end] |&gt;\n    x -&gt; parse.(Int32, x)\n\n4-element Vector{Int32}:\n  434\n 1041\n 2219\n 1218"
+  },
+  {
+    "objectID": "SOLUTIONS/2023/Day_06.html#the-input",
+    "href": "SOLUTIONS/2023/Day_06.html#the-input",
+    "title": "Day 6",
+    "section": "",
+    "text": "The races’ times and distances:\n\nroot = dirname(@__FILE__);\ninput_file = joinpath(root, \"..\", \"..\", \"DATA\", \"2023\", \"input_day06.txt\");\ninput_data = read(open(input_file, \"r\"), String);\nprintln(input_data)\n\nTime:        58     81     96     76\nDistance:   434   1041   2219   1218\n\n\n\n\ntime_line , dist_line = split(input_data, \"\\n\")[1:2]\ntimes = split(time_line, r\"\\s+\")[2:end] |&gt;\n    x -&gt; parse.(Int32, x)\ndistances = split(dist_line, r\"\\s+\")[2:end] |&gt;\n    x -&gt; parse.(Int32, x)\n\n4-element Vector{Int32}:\n  434\n 1041\n 2219\n 1218"
+  },
+  {
+    "objectID": "SOLUTIONS/2023/Day_06.html#part-1",
+    "href": "SOLUTIONS/2023/Day_06.html#part-1",
+    "title": "Day 6",
+    "section": "Part 1",
+    "text": "Part 1\n\nThe problem\nFor each race, we can hold the button to charge the boat for varying number of miliseconds but not exceed the maximum time given in the input file. With each milisecond of holding the button, the boat gains 1ms/mm velocity.\n\nfunction find_max_dist(time_hold_button::Int64, max_time::Int32)\n    return (max_time - time_hold_button)*time_hold_button\nend\n\nfind_max_dist (generic function with 1 method)\n\n\n\n\nThe solution\nWe need to find the number of ways we can get larger distance than what is in the input file.\n\nall_winning_approaches = Int32[];\nfor idx in 1:lastindex(times)\n    cur_max_time = times[idx];\n    cur_max_dist = distances[idx];\n    cur_winning_approaches = 0;\n    for t in 1:(cur_max_time - 1)\n        max_dist = find_max_dist(t, cur_max_time)\n        if max_dist &gt; cur_max_dist\n            cur_winning_approaches += 1;\n        end\n    end\n    push!(all_winning_approaches, cur_winning_approaches);\nend\n\n\n\nThe total number of ways to win all the races: 1159152."
+  },
+  {
     "objectID": "YEARS/2022.html",
     "href": "YEARS/2022.html",
     "title": "Year 2022",

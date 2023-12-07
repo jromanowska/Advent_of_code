@@ -4,6 +4,9 @@ project:
   render:
     - "*.qmd"
 
+execute:
+  freeze: auto
+
 website:
   title: "Advent_of_code"
   site-path: "/docs/"

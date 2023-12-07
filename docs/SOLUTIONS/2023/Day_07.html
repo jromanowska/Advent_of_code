@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Julia Romanowska">
 
-<title>Advent_of_code - Year 2023</title>
+<title>Advent_of_code - Day 7</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,22 +24,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -61,7 +62,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -71,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Advent_of_code</span>
     </a>
   </div>
@@ -82,15 +83,15 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html" rel="" target="">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../YEARS/2022.html" rel="" target="">
+    <a class="nav-link" href="../../YEARS/2022.html" rel="" target="">
  <span class="menu-text">2022</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../YEARS/2023.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../YEARS/2023.html" rel="" target="">
  <span class="menu-text">2023</span></a>
   </li>  
   <li class="nav-item">
@@ -109,20 +110,32 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-input" id="toc-the-input" class="nav-link active" data-scroll-target="#the-input">The input</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Year 2023</h1>
+<h1 class="title">Day 7</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Julia Romanowska </p>
+          </div>
+  </div>
     
   
     
@@ -131,131 +144,11 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>My take on the puzzles in 2023 edition of <a href="https://adventofcode.com/2023">Advent of Code</a>.</p>
-<div class="calendar">
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_01.html">1</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_02.html">2</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_03.html">3</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_04.html">4</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_05.html">5</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_06.html">6</a></p>
-</div>
-</div>
-<div class="card border-success mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_07.html">7</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_08.html">8</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_09.html">9</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_10.html">10</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_11.html">11</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_12.html">12</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_13.html">13</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_14.html">14</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_15.html">15</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_16.html">16</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_17.html">17</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_18.html">18</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_19.html">19</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_20.html">20</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_21.html">21</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_22.html">22</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_23.html">23</a></p>
-</div>
-</div>
-<div class="card border-warning mb-3">
-<div class="day">
-<p><a href="../SOLUTIONS/2023/Day_24.html">24</a></p>
-</div>
-</div>
-</div>
+<section id="the-input" class="level2">
+<h2 class="anchored" data-anchor-id="the-input">The input</h2>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

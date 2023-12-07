@@ -1,0 +1,75 @@
+---
+title: "Day 6"
+author: "Julia Romanowska"
+jupyter: julia-1.9
+---
+
+```{julia}
+#| label: setup
+#| include: false
+using Markdown;
+```
+
+## The input
+
+The races' times and distances:
+
+```{julia}
+root = dirname(@__FILE__);
+input_file = joinpath(root, "..", "..", "DATA", "2023", "input_day06.txt");
+input_data = read(open(input_file, "r"), String);
+println(input_data)
+```
+
+```{julia}
+#| label: get_data
+time_line , dist_line = split(input_data, "\n")[1:2]
+times = split(time_line, r"\s+")[2:end] |>
+    x -> parse.(Int32, x)
+distances = split(dist_line, r"\s+")[2:end] |>
+    x -> parse.(Int32, x)
+```
+
+## Part 1
+
+### The problem
+
+For each race, we can hold the button to charge the boat for varying number of
+miliseconds but not exceed the maximum time given in the input file. With each 
+milisecond of holding the button, the boat gains 1ms/mm velocity.
+
+```{julia}
+#| label: function_max_dist
+function find_max_dist(time_hold_button::Int64, max_time::Int32)
+    return (max_time - time_hold_button)*time_hold_button
+end
+```
+
+### The solution
+
+We need to find the number of ways we can get larger distance than what is in
+the input file.
+
+```{julia}
+all_winning_approaches = Int32[];
+for idx in 1:lastindex(times)
+    cur_max_time = times[idx];
+    cur_max_dist = distances[idx];
+    cur_winning_approaches = 0;
+    for t in 1:(cur_max_time - 1)
+        max_dist = find_max_dist(t, cur_max_time)
+        if max_dist > cur_max_dist
+            cur_winning_approaches += 1;
+        end
+    end
+    push!(all_winning_approaches, cur_winning_approaches);
+end
+```
+
+
+```{julia}
+#| echo: false
+Markdown.parse("""
+The total number of ways to win all the races: $(reduce(*, all_winning_approaches)).
+""")
+```

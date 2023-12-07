@@ -25,7 +25,7 @@ My take on the puzzles in 2023 edition of [Advent of Code](https://adventofcode.
 [4](../SOLUTIONS/2023/Day_04.html)
 :::
 :::
-::: {.card .border-success .mb-3}
+::: {.card .border-warning .mb-3}
 ::: day
 [5](../SOLUTIONS/2023/Day_05.html)
 :::
@@ -35,7 +35,7 @@ My take on the puzzles in 2023 edition of [Advent of Code](https://adventofcode.
 [6](../SOLUTIONS/2023/Day_06.html)
 :::
 :::
-::: {.card .border-warning .mb-3}
+::: {.card .border-success .mb-3}
 ::: day
 [7](../SOLUTIONS/2023/Day_07.html)
 :::

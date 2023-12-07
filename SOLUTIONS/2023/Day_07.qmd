@@ -1,0 +1,17 @@
+---
+title: "Day 7"
+author: "Julia Romanowska"
+jupyter: julia-1.9
+---
+
+```{julia}
+#| label: setup
+#| include: false
+using DataFrames;
+using DataFramesMeta;
+using CSV;
+using Markdown;
+```
+
+## The input
+
