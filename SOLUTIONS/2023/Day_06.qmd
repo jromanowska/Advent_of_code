@@ -25,9 +25,9 @@ println(input_data)
 #| label: get_data
 time_line , dist_line = split(input_data, "\n")[1:2]
 times = split(time_line, r"\s+")[2:end] |>
-    x -> parse.(Int32, x)
+    x -> parse.(Int64, x)
 distances = split(dist_line, r"\s+")[2:end] |>
-    x -> parse.(Int32, x)
+    x -> parse.(Int64, x)
 ```
 
 ## Part 1
@@ -40,7 +40,7 @@ milisecond of holding the button, the boat gains 1ms/mm velocity.
 
 ```{julia}
 #| label: function_max_dist
-function find_max_dist(time_hold_button::Int64, max_time::Int32)
+function find_max_dist(time_hold_button::Int64, max_time::Int64)
     return (max_time - time_hold_button)*time_hold_button
 end
 ```
@@ -51,7 +51,7 @@ We need to find the number of ways we can get larger distance than what is in
 the input file.
 
 ```{julia}
-all_winning_approaches = Int32[];
+all_winning_approaches = Int64[];
 for idx in 1:lastindex(times)
     cur_max_time = times[idx];
     cur_max_dist = distances[idx];
@@ -71,5 +71,30 @@ end
 #| echo: false
 Markdown.parse("""
 The total number of ways to win all the races: $(reduce(*, all_winning_approaches)).
+""")
+```
+
+## Part 2
+
+Instead of the input showing many races, it's actually one!
+
+```{julia}
+one_time = parse(Int64, string(times...))
+one_distance = parse(Int64, string(distances...))
+
+cur_winning_approaches = 0;
+for t in 1:(one_time - 1)
+    max_dist = find_max_dist(t, one_time)
+    if max_dist > one_distance
+        cur_winning_approaches += 1;
+    end
+end
+```
+
+
+```{julia}
+#| echo: false
+Markdown.parse("""
+The total number of ways to win all the races: $(cur_winning_approaches).
 """)
 ```
