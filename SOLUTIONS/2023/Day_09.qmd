@@ -1,0 +1,98 @@
+---
+title: "Day 9"
+author: "Julia Romanowska"
+jupyter: julia-1.9
+---
+
+```{julia}
+#| label: setup
+#| include: false
+using Markdown;
+```
+
+## The input
+
+Sequences of numbers.
+
+```{julia}
+#| label: read_data
+root = dirname(@__FILE__);
+input_file = joinpath(root, "..", "..", "DATA", "2023", "input_day09.txt");
+#input_file = joinpath(root, "..", "..", "DATA", "2023", "example_input_day09.txt");
+input_data = read(open(input_file, "r"), String);
+```
+
+```{julia}
+input_data = split(input_data, "\n") |>
+    x -> split.(x, " ");
+input_data = broadcast(x -> parse.(Int64, x), input_data[1:(end - 1)])
+```
+
+## Part 1
+
+### The problem and solution
+
+Gather all the last differences and extrapolate another number in each sequence.
+
+```{julia}
+next_num_in_seq = Int64[];
+for cur_seq in input_data
+    last_differences = Int64[];
+
+    cur_diff = diff(cur_seq);
+    while !all(cur_diff .== 0)
+        push!(last_differences, cur_diff[end]);
+        cur_diff = diff(cur_diff);
+    end
+
+    push!(last_differences, cur_seq[end]);
+    next_diff = 0;
+    for i in last_differences
+        next_diff += i;
+    end
+    push!(next_num_in_seq, next_diff);
+end
+```
+
+```{julia}
+#| echo: false
+Markdown.parse("""
+The sum of the extrapolated values is: $(sum(next_num_in_seq)).
+""")
+```
+
+
+# Part 2
+
+### The problem and solution
+
+Gather all the first differences and extrapolate previous number in each sequence.
+
+```{julia}
+prev_num_in_seq = Int64[];
+for cur_seq in input_data
+    first_differences = Int64[];
+
+    cur_diff = diff(cur_seq);
+    while !all(cur_diff .== 0)
+        push!(first_differences, cur_diff[begin]);
+        cur_diff = diff(cur_diff);
+    end
+
+    first_differences = first_differences[end:-1:1];
+    push!(first_differences, cur_seq[begin]);
+    prev_diff = 0;
+    for i in first_differences
+        prev_diff = i - prev_diff;
+    end
+    push!(prev_num_in_seq, prev_diff);
+end
+```
+
+```{julia}
+#| echo: false
+Markdown.parse("""
+The sum of the extrapolated values is: $(sum(prev_num_in_seq)).
+""")
+```
+
