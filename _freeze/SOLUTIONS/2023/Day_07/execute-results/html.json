@@ -1,9 +1,9 @@
 {
-  "hash": "56110154e7484f1214d02b5381a02428",
+  "hash": "074c84eb0bcfe1071f3472243351a2f8",
   "result": {
-    "markdown": "---\ntitle: Day 7\nauthor: Julia Romanowska\n---\n\n\n## The input\n\n",
+    "markdown": "---\ntitle: Day 7\nauthor: Julia Romanowska\n---\n\n",
     "supporting": [
-      "Day_07_files"
+      "Day_07_files/figure-html"
     ],
     "filters": [],
     "includes": {}

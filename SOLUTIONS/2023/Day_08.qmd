@@ -1,0 +1,97 @@
+---
+title: "Day 8"
+author: "Julia Romanowska"
+jupyter: julia-1.9
+---
+
+```{julia}
+#| label: setup
+#| include: false
+using DataFrames;
+using CSV;
+using Markdown;
+```
+
+## The input
+
+First line are the directions. Afterwards, there are "nodes".
+
+```{julia}
+root = dirname(@__FILE__);
+input_file = joinpath(root, "..", "..", "DATA", "2023", "input_day08.txt");
+#input_file = joinpath(root, "..", "..", "DATA", "2023", "example_input_day08.txt");
+input_data = read(open(input_file, "r"), String);
+```
+
+```{julia}
+#| label: extract_instructions
+directions , nodes_raw = split(input_data, "\n\n");
+nodes = CSV.read(
+    IOBuffer(nodes_raw),
+    DataFrame;
+    header = ["name", "value"],
+    delim = " = "
+)
+```
+
+## Part 1
+
+### The problem
+
+I can create a dictionary of pairs.
+
+```{julia}
+function create_pairs(s::AbstractString)
+    m = match(r"\((?<left>\w+), (?<right>\w+)\)", s);
+    return (m["left"], m["right"])
+end
+```
+
+```{julia}
+transform!(
+    nodes,
+    :value => ByRow(create_pairs) => :value
+)
+nodes_dict = Dict(zip(nodes.name, nodes.value))
+```
+
+And then, I need the sequence of directions.
+
+### The solution
+
+How many steps from "AAA" to "ZZZ"?
+
+```{julia}
+function check_directions(c::Char)
+    if c == 'L'
+        return 1
+    end
+    return 2
+end
+```
+
+```{julia}
+start_node = "AAA";
+end_node = "ZZZ";
+steps = 0;
+direction_no = 1;
+
+cur_node = start_node;
+while cur_node != end_node
+    cur_direction = check_directions(directions[direction_no]);
+    global cur_node = nodes_dict[cur_node][cur_direction];
+    global steps += 1;
+    global direction_no += 1;
+    if direction_no == lastindex(directions) + 1
+        global direction_no = 1;
+    end
+end
+```
+
+```{julia}
+#| echo: false
+Markdown.parse("""
+The trip takes: $(steps) steps.
+""")
+```
+
